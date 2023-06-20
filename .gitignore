@@ -8,3 +8,6 @@ lib/js/*
 !__snapshots__
 coverage
 .coveralls.yml
+_opam
+_build
+.vscode/
