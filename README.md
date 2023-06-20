@@ -1,15 +1,8 @@
 # melange-jest
 
-[BuckleScript](https://github.com/bucklescript/bucklescript) bindings for [Jest](https://github.com/facebook/jest)
+[Melange](https://melange.re) bindings for [Jest](https://github.com/facebook/jest)
 
-[![npm](https://img.shields.io/npm/v/@glennsl/bs-jest.svg)](https://npmjs.org/@glennsl/bs-jest)
-[![Travis](https://img.shields.io/travis/glennsl/bs-jest/master.svg)](https://travis-ci.org/glennsl/bs-jest)
-[![Coveralls](https://img.shields.io/coveralls/glennsl/bs-jest/master.svg)](https://coveralls.io/github/glennsl/bs-jest?branch=master)
-[![Dependencies](https://img.shields.io/david/glennsl/bs-jest.svg)](https://github.com/glennsl/bs-jest/blob/master/package.json)
-[![Issues](https://img.shields.io/github/issues/glennsl/bs-jest.svg)](https://github.com/glennsl/bs-jest/issues)
-[![Last Commit](https://img.shields.io/github/last-commit/glennsl/bs-jest.svg)](https://github.com/glennsl/bs-jest/commits/master)
-
-**NOTE:** _NPM package has moved to `@glennsl/bs-jest`. Remember to update both `package.json` AND `bsconfig.json`._
+Based on [@glennsl/bs-jest](https://github.com/glennsl/bs-jest).
 
 ## Status
 
