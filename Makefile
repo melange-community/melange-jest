@@ -23,6 +23,8 @@ install: ## Install development dependencies
 	yarn
 	opam update
 	opam install -y . --deps-only --with-test
+	# just used to build the examples
+	opam pin add melange-webapi.dev -y git+https://github.com/melange-community/melange-webapi.git#074364db83ecaff2b9ec36eef7a22dad3158b759
 
 .PHONY: build
 build: ## Build the project
@@ -50,7 +52,7 @@ watch: ## Watch for the filesystem and rebuild on every change
 
 .PHONY: test
 test: ## Run the tests
-	$(DUNE) build @runtest
+	$(DUNE) build @runtest --no-buffer
 
 .PHONY: test-watch
 test-watch: ## Run the tests and watch for changes

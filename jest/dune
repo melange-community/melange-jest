@@ -1,3 +1,5 @@
+(dirs :standard __tests__)
+
 (library
  (name jest)
  (public_name melange-jest.jest)

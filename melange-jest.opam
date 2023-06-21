@@ -6,6 +6,7 @@ maintainer: [
 ]
 authors: [
   "glennsl"
+  "Neil Kistner <neil.kistner@gmail.com>"
 ]
 license: "MIT"
 homepage: "https://github.com/melange-community/melange-jest/"
@@ -16,6 +17,7 @@ depends: [
   "ocaml" {>= "4.14.0"}
   "melange" {>= "1.0.0"}
   "reason" {with-test}
+  "melange-webapi" {dev}
   "ocaml-lsp-server" {with-test}
   "odoc" {with-doc}
 ]
