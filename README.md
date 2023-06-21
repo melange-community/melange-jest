@@ -1,8 +1,8 @@
 # melange-jest
 
-[Melange](https://melange.re) bindings for [Jest](https://github.com/facebook/jest)
+[Melange](https://melange.re) bindings for [Jest](https://github.com/facebook/jest) and [jest-dom](https://github.com/testing-library/jest-dom).
 
-Based on [@glennsl/bs-jest](https://github.com/glennsl/bs-jest) and [bs-jest-dom/](https://github.com/wyze/bs-jest-dom/).
+Based on [@glennsl/bs-jest](https://github.com/glennsl/bs-jest) and [bs-jest-dom](https://github.com/wyze/bs-jest-dom/).
 
 ## Status
 
@@ -37,7 +37,7 @@ describe("Expect.Operators", () => {
 
 ```
 
-See [the tests](https://github.com/melange-community/melange-jest/tree/main/__tests__) for more examples.
+See [the jest tests](./jest/__tests__/) or [the jest-dom tests](./jest-dom/__tests__/) for more examples.
 
 ## Installation
 
@@ -76,6 +76,14 @@ Add `melange-jest.jest` to the `libraries` in your `dune` file:
 ; ...
 ```
 
+If you need `jest-dom`, add `melange-jest.jest-dom` to the `libraries` in your `dune` file:
+
+```dune
+; ...
+  (libraries melange-jest.jest melange-jest.jest-dom)
+; ...
+```
+
 ## Usage
 
 Put tests in a `__tests__` directory and use the suffix `*test.ml`/`*test.re` (Make sure to use valid module names. e.g. `<name>_test.re` is valid while `<name>.test.re` is not). When compiled they will be put in a `__tests__` directory under `lib`, with a `*test.js` suffix, ready to be picked up when you run `jest`. If you're not already familiar with [Jest](https://github.com/facebook/jest), see [the Jest documentation](https://facebook.github.io/jest/).
@@ -92,7 +100,7 @@ At first sight this may still seem very limiting, and if you write very imperati
 
 ## Documentation
 
-For the moment, please refer to [Jest.mli](./src/jest.mli).
+For the moment, please refer to [Jest.mli](./jest/jest.mli).
 
 ## Troubleshooting
 
