@@ -4,10 +4,3 @@
  (libraries jest)
  (preprocess
   (pps melange.ppx)))
-
-(rule
- (alias runtest)
- (deps
-  (alias_rec test))
- (action
-  (run npx jest)))

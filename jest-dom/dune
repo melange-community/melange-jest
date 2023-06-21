@@ -1,0 +1,8 @@
+(dirs :standard __tests__)
+
+(library
+ (name jestDom)
+ (public_name melange-jest.jest-dom)
+ (libraries melange-jest.jest)
+ (modes melange)
+ (preprocess (pps melange.ppx)))

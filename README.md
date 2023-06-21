@@ -2,7 +2,7 @@
 
 [Melange](https://melange.re) bindings for [Jest](https://github.com/facebook/jest)
 
-Based on [@glennsl/bs-jest](https://github.com/glennsl/bs-jest).
+Based on [@glennsl/bs-jest](https://github.com/glennsl/bs-jest) and [bs-jest-dom/](https://github.com/wyze/bs-jest-dom/).
 
 ## Status
 
@@ -55,6 +55,14 @@ npm package, which should be installed separately:
 ```json
   "devDependencies": {
     "jest": "^26.5.2"
+  }
+```
+
+If you want to use `jest-dom`, you will need the following npm package:
+
+```json
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.10.0"
   }
 ```
 

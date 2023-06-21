@@ -1,5 +1,5 @@
 module.exports = {
-    rootDir: "./_build/default/__tests__/test",
+    rootDir: "./_build/default/",
     testMatch: ["**/*_test.js"],
 };
   
