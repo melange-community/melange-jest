@@ -9,6 +9,7 @@ authors: [
   "Neil Kistner <neil.kistner@gmail.com>"
 ]
 license: "MIT"
+tags: ["melange" "org:melange-community"]
 homepage: "https://github.com/melange-community/melange-jest/"
 doc: "https://github.com/melange-community/melange-jest/"
 bug-reports: "https://github.com/melange-community/melange-jest/issues"

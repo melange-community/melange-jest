@@ -68,7 +68,7 @@ If you want to use `jest-dom`, you will need the following npm package:
 
 ## Setup
 
-Add `melange-jest.jest` to the `libraries` in your `dune` file:
+Add `melange-jest.jest` to the `libraries` field in your `dune` file:
 
 ```dune
 ; ...
