@@ -2,12 +2,12 @@ open Jest
 open ExpectJs
 
 (* TODO: move to BS std lib *)
-external bind : ('a -> 'b) -> 'c -> 'a -> ('a -> 'b) = "bind" [@@bs.send]
-external bindThis : ('a -> 'b [@bs]) -> 'c -> ('a -> 'b [@bs]) = "bind" [@@bs.send]
-external call : ('a -> 'b [@bs]) -> 'c -> 'a -> 'b = "call" [@@bs.send]
+external bind : ('a -> 'b) -> 'c -> 'a -> ('a -> 'b) = "bind" [@@mel.send]
+external bindThis : ('a -> 'b [@u]) -> 'c -> ('a -> 'b [@u]) = "bind" [@@mel.send]
+external call : ('a -> 'b [@u]) -> 'c -> 'a -> 'b = "call" [@@mel.send]
 let call self arg = call self () arg
-external callThis : ('a -> 'b [@bs]) -> 'c -> 'a -> 'b = "call" [@@bs.send]
-external call2 : ('a -> 'b -> 'c [@bs]) -> (_ [@bs.as 0]) -> 'a -> 'b -> 'c = "call" [@@bs.send]
+external callThis : ('a -> 'b [@u]) -> 'c -> 'a -> 'b = "call" [@@mel.send]
+external call2 : ('a -> 'b -> 'c [@u]) -> (_ [@mel.as 0]) -> 'a -> 'b -> 'c = "call" [@@mel.send]
 
 let _ = 
 
@@ -114,7 +114,7 @@ describe "inferred_fn" (fun _ ->
     let fn = MockJs.fn mockFn in
     
     let before = call fn 10 in
-    mockFn |> MockJs.mockImplementation ((fun a -> Js.Undefined.return (string_of_int a)) [@bs]) |> ignore;
+    mockFn |> MockJs.mockImplementation ((fun a -> Js.Undefined.return (string_of_int a)) [@u]) |> ignore;
     
     expect
       (before, call fn 18, call fn 24)
@@ -127,8 +127,8 @@ describe "inferred_fn" (fun _ ->
     let fn = MockJs.fn mockFn in
     
     let before = call fn 10 in
-    mockFn |> MockJs.mockImplementationOnce ((fun a -> Js.Undefined.return (string_of_int a)) [@bs]) |> ignore;
-    mockFn |> MockJs.mockImplementationOnce ((fun a -> Js.Undefined.return (string_of_int (a * 2))) [@bs]) |> ignore;
+    mockFn |> MockJs.mockImplementationOnce ((fun a -> Js.Undefined.return (string_of_int a)) [@u]) |> ignore;
+    mockFn |> MockJs.mockImplementationOnce ((fun a -> Js.Undefined.return (string_of_int (a * 2))) [@u]) |> ignore;
     
     expect
       (before, call fn 18, call fn 24, call fn 12)
@@ -179,7 +179,7 @@ describe "inferred_fn" (fun _ ->
   
   (*
   Skip.test "bindThis" (fun _ ->
-    let fn = ((fun a -> string_of_int a) [@bs]) in
+    let fn = ((fun a -> string_of_int a) [@u]) in
     let boundFn = bindThis fn "this" in
     
     expect (call boundFn () 2) |> toEqual "2"
@@ -346,7 +346,7 @@ describe "fn" (fun _ ->
 
 describe "fn2" (fun _ ->
   test "calls implementation" (fun _ ->
-    let mockFn = JestJs.fn2 ((fun a b -> string_of_int (a + b)) [@bs]) in
+    let mockFn = JestJs.fn2 ((fun a b -> string_of_int (a + b)) [@u]) in
     let fn = MockJs.fn mockFn in
     
     expect (call2 fn 18 24) |> toBe "42"
@@ -354,7 +354,7 @@ describe "fn2" (fun _ ->
 
   (*
   test "calls - records call arguments" (fun _ ->
-    let mockFn = JestJs.fn2 ((fun a b -> string_of_int (a + b)) [@bs]) in
+    let mockFn = JestJs.fn2 ((fun a b -> string_of_int (a + b)) [@u]) in
     
     let _ = MockJs.fn mockFn 18 24 in
     let calls  = mockFn |> MockJs.calls in

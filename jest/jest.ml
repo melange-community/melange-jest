@@ -54,10 +54,10 @@ end = struct
   type 'a t = assertion
   type specialMatch
 
-  external expect : 'a -> < .. > Js.t = "expect" [@@bs.val]
-  external fail : string -> unit = "fail" [@@bs.val]
-  external arrayContaining : 'a array -> specialMatch = "expect.arrayContaining" [@@bs.val]
-  external stringContaining : string -> specialMatch = "expect.stringContaining" [@@bs.val]
+  external expect : 'a -> < .. > Js.t = "expect"
+  external fail : string -> unit = "fail"
+  external arrayContaining : 'a array -> specialMatch = "expect.arrayContaining"
+  external stringContaining : string -> specialMatch = "expect.stringContaining"
   let objectContaining : string array -> < .. > Js.t = [%raw {|
     function (properties) {
       var spec = {};
@@ -126,9 +126,9 @@ end
 
 module Runner (A : Asserter) = struct
   let affirm = A.affirm
-  external _test : string -> (unit -> unit Js.undefined [@bs.uncurry]) -> unit = "test" [@@bs.val]
-  external _testAsync : string -> ((unit -> unit [@bs]) -> unit Js.undefined) -> int Js.Undefined.t -> unit = "test" [@@bs.val]
-  external _testPromise : string -> (unit -> 'a Js.Promise.t [@bs.uncurry]) -> int Js.Undefined.t -> unit = "test" [@@bs.val]
+  external _test : string -> (unit -> unit Js.undefined [@mel.uncurry]) -> unit = "test"
+  external _testAsync : string -> ((unit -> unit [@u]) -> unit Js.undefined) -> int Js.Undefined.t -> unit = "test"
+  external _testPromise : string -> (unit -> 'a Js.Promise.t [@mel.uncurry]) -> int Js.Undefined.t -> unit = "test"
 
   let test name callback =
     _test name (fun () ->
@@ -139,7 +139,7 @@ module Runner (A : Asserter) = struct
     _testAsync name (fun finish ->
       callback (fun case ->
         affirm case;
-        finish () [@bs]);
+        finish () [@u]);
       Js.undefined)
       (Js.Undefined.fromOption timeout)
 
@@ -155,62 +155,62 @@ module Runner (A : Asserter) = struct
         affirm @@ callback input;
         Js.undefined))
 
-  external describe : string -> (unit -> unit Js.undefined [@bs.uncurry]) -> unit = "describe" [@@bs.val]
+  external describe : string -> (unit -> unit Js.undefined [@mel.uncurry]) -> unit = "describe"
   let describe label f =
     describe label (fun () -> f (); Js.undefined)
 
-  external beforeAll : (unit -> unit [@bs.uncurry]) -> unit = "beforeAll" [@@bs.val]
-  external beforeAllAsync : ((unit -> unit [@bs]) -> unit Js.undefined) -> int Js.Undefined.t -> unit = "beforeAll" [@@bs.val]
+  external beforeAll : (unit -> unit [@mel.uncurry]) -> unit = "beforeAll"
+  external beforeAllAsync : ((unit -> unit [@u]) -> unit Js.undefined) -> int Js.Undefined.t -> unit = "beforeAll"
   let beforeAllAsync ?timeout callback  =
     beforeAllAsync
-      (fun finish -> callback (fun () -> finish () [@bs]); Js.undefined)
+      (fun finish -> callback (fun () -> finish () [@u]); Js.undefined)
       (Js.Undefined.fromOption timeout)
-  external beforeAllPromise : (unit -> 'a Js.Promise.t [@bs.uncurry]) -> int Js.Undefined.t -> unit = "beforeAll" [@@bs.val]
+  external beforeAllPromise : (unit -> 'a Js.Promise.t [@mel.uncurry]) -> int Js.Undefined.t -> unit = "beforeAll"
   let beforeAllPromise ?timeout callback =
     beforeAllPromise
       (fun () -> callback () |> Js.Promise.resolve)
       (Js.Undefined.fromOption timeout)
 
-  external beforeEach : (unit -> unit [@bs.uncurry]) -> unit = "beforeEach" [@@bs.val]
-  external beforeEachAsync : ((unit -> unit [@bs]) -> unit Js.undefined) -> int Js.Undefined.t -> unit = "beforeEach" [@@bs.val]
+  external beforeEach : (unit -> unit [@mel.uncurry]) -> unit = "beforeEach"
+  external beforeEachAsync : ((unit -> unit [@u]) -> unit Js.undefined) -> int Js.Undefined.t -> unit = "beforeEach"
   let beforeEachAsync ?timeout callback  =
     beforeEachAsync
-      (fun finish -> callback (fun () -> finish () [@bs]); Js.undefined)
+      (fun finish -> callback (fun () -> finish () [@u]); Js.undefined)
       (Js.Undefined.fromOption timeout)
-  external beforeEachPromise : (unit -> 'a Js.Promise.t [@bs.uncurry]) -> int Js.Undefined.t -> unit = "beforeEach" [@@bs.val]
+  external beforeEachPromise : (unit -> 'a Js.Promise.t [@mel.uncurry]) -> int Js.Undefined.t -> unit = "beforeEach"
   let beforeEachPromise ?timeout callback =
     beforeEachPromise
       (fun () -> callback () |> Js.Promise.resolve)
       (Js.Undefined.fromOption timeout)
 
-  external afterAll : (unit -> unit [@bs.uncurry]) -> unit = "afterAll" [@@bs.val]
-  external afterAllAsync : ((unit -> unit [@bs]) -> unit Js.undefined) -> int Js.Undefined.t -> unit = "afterAll" [@@bs.val]
+  external afterAll : (unit -> unit [@mel.uncurry]) -> unit = "afterAll"
+  external afterAllAsync : ((unit -> unit [@u]) -> unit Js.undefined) -> int Js.Undefined.t -> unit = "afterAll"
   let afterAllAsync ?timeout callback =
     afterAllAsync
-      (fun finish -> callback (fun () -> finish () [@bs]); Js.undefined)
+      (fun finish -> callback (fun () -> finish () [@u]); Js.undefined)
       (Js.Undefined.fromOption timeout)
-  external afterAllPromise : (unit -> 'a Js.Promise.t [@bs.uncurry]) -> int Js.Undefined.t -> unit = "afterAll" [@@bs.val]
+  external afterAllPromise : (unit -> 'a Js.Promise.t [@mel.uncurry]) -> int Js.Undefined.t -> unit = "afterAll"
   let afterAllPromise ?timeout callback =
     afterAllPromise
       (fun () -> callback () |> Js.Promise.resolve)
       (Js.Undefined.fromOption timeout)
 
-  external afterEach : (unit -> unit [@bs.uncurry]) -> unit = "afterEach" [@@bs.val]
-  external afterEachAsync : ((unit -> unit [@bs]) -> unit Js.undefined) -> int Js.Undefined.t -> unit = "afterEach" [@@bs.val]
+  external afterEach : (unit -> unit [@mel.uncurry]) -> unit = "afterEach"
+  external afterEachAsync : ((unit -> unit [@u]) -> unit Js.undefined) -> int Js.Undefined.t -> unit = "afterEach"
   let afterEachAsync ?timeout callback =
     afterEachAsync
-      (fun finish -> callback (fun () -> finish () [@bs]); Js.undefined)
+      (fun finish -> callback (fun () -> finish () [@u]); Js.undefined)
       (Js.Undefined.fromOption timeout)
-  external afterEachPromise : (unit -> 'a Js.Promise.t [@bs.uncurry]) -> int Js.Undefined.t -> unit = "afterEach" [@@bs.val]
+  external afterEachPromise : (unit -> 'a Js.Promise.t [@mel.uncurry]) -> int Js.Undefined.t -> unit = "afterEach"
   let afterEachPromise ?timeout callback =
     afterEachPromise
       (fun () -> callback () |> Js.Promise.resolve)
       (Js.Undefined.fromOption timeout)
 
   module Only = struct
-    external _test : string -> (unit -> unit Js.undefined [@bs.uncurry]) -> unit = "it.only" [@@bs.val]
-    external _testAsync : string -> ((unit -> unit [@bs]) -> unit Js.undefined) -> int Js.Undefined.t -> unit = "it.only" [@@bs.val]
-    external _testPromise : string -> (unit -> 'a Js.Promise.t [@bs.uncurry]) -> int Js.Undefined.t -> unit = "it.only" [@@bs.val]
+    external _test : string -> (unit -> unit Js.undefined [@mel.uncurry]) -> unit = "it.only"
+    external _testAsync : string -> ((unit -> unit [@u]) -> unit Js.undefined) -> int Js.Undefined.t -> unit = "it.only"
+    external _testPromise : string -> (unit -> 'a Js.Promise.t [@mel.uncurry]) -> int Js.Undefined.t -> unit = "it.only"
 
     let test name callback =
       _test name (fun () ->
@@ -221,7 +221,7 @@ module Runner (A : Asserter) = struct
       _testAsync name (fun finish ->
         callback (fun assertion ->
           affirm assertion;
-          finish () [@bs]);
+          finish () [@u]);
         Js.undefined)
         (Js.Undefined.fromOption timeout)
 
@@ -237,30 +237,30 @@ module Runner (A : Asserter) = struct
           affirm @@ callback input;
           Js.undefined))
 
-    external describe : string -> (unit -> unit Js.undefined [@bs.uncurry]) -> unit = "describe.only" [@@bs.val]
+    external describe : string -> (unit -> unit Js.undefined [@mel.uncurry]) -> unit = "describe.only"
     let describe label f =
       describe label (fun () -> f (); Js.undefined)
   end
 
   module Skip = struct
-    external test : string -> (unit -> 'a A.t [@bs.uncurry]) -> unit = "it.skip" [@@bs.val]
-    external testAsync : string -> (('a A.t -> unit) -> unit) -> unit = "it.skip" [@@bs.val]
+    external test : string -> (unit -> 'a A.t [@mel.uncurry]) -> unit = "it.skip"
+    external testAsync : string -> (('a A.t -> unit) -> unit) -> unit = "it.skip"
     let testAsync name ?timeout:_ callback =
       testAsync name callback
-    external testPromise : string -> (unit -> 'a A.t Js.Promise.t [@bs.uncurry]) -> unit = "it.skip" [@@bs.val]
+    external testPromise : string -> (unit -> 'a A.t Js.Promise.t [@mel.uncurry]) -> unit = "it.skip"
     let testPromise name ?timeout:_ callback =
       testPromise name callback
     let testAll name inputs callback =
       inputs |> List.iter (fun input ->
         let name = {j|$name - $input|j} in
         test name (fun () -> callback input))
-    external describe : string -> (unit -> unit Js.undefined [@bs.uncurry]) -> unit = "describe.skip" [@@bs.val]
+    external describe : string -> (unit -> unit Js.undefined [@mel.uncurry]) -> unit = "describe.skip"
     let describe label f =
       describe label (fun () -> f (); Js.undefined)
   end
 
   module Todo = struct
-    external test : string -> unit = "it.todo" [@@bs.val]
+    external test : string -> unit = "it.todo"
   end
 end
 
@@ -394,77 +394,77 @@ module MockJs = struct
 
   type ('fn, 'args, 'ret) fn
 
-  [%%bs.raw {|
+  [%%mel.raw {|
     function makeNewMock(self) {
       return new (Function.prototype.bind.apply(self, arguments));
     }
   |}]
 
-  external new0 : (unit -> 'ret, unit, 'ret) fn -> 'ret = "makeNewMock" [@@bs.val]
+  external new0 : (unit -> 'ret, unit, 'ret) fn -> 'ret = "makeNewMock"
   let new0 = new0
-  external new1 : ('a -> 'ret, 'a, 'ret) fn -> 'a -> 'ret = "makeNewMock" [@@bs.val]
+  external new1 : ('a -> 'ret, 'a, 'ret) fn -> 'a -> 'ret = "makeNewMock"
   let new1 a self = new1 self a
-  external new2 : (('a -> 'b -> 'ret) [@bs], ('a * 'b), 'ret) fn -> 'a -> 'b -> 'ret = "makeNewMock" [@@bs.val]
+  external new2 : (('a -> 'b -> 'ret) [@u], ('a * 'b), 'ret) fn -> 'a -> 'b -> 'ret = "makeNewMock"
   let new2 a b self = new2 self a b
 
   external fn : ('fn, _, _) fn -> 'fn = "%identity"
-  external calls : (_, 'args, _) fn -> 'args array = "calls" [@@bs.get] [@@bs.scope "mock"]
+  external calls : (_, 'args, _) fn -> 'args array = "calls" [@@mel.get] [@@mel.scope "mock"]
   let calls self = Js.Array.copy (calls self) (* Awesome, the bloody things are mutated so we need to copy *)
-  let calls self = calls self |> Array.map [%bs.raw {|
+  let calls self = calls self |> Array.map [%mel.raw {|
     function (args) { return args.length === 1 ? args[0] : args }
   |}] (* there's no such thing as aa 1-ary tuple, so we need to unbox single-element arrays *)
-  external instances : (_, _, 'ret) fn -> 'ret array = "instances" [@@bs.get] [@@bs.scope "mock"] (* TODO: semms this only records "instances" created by `new` *)
+  external instances : (_, _, 'ret) fn -> 'ret array = "instances" [@@mel.get] [@@mel.scope "mock"] (* TODO: semms this only records "instances" created by `new` *)
   let instances self = Js.Array.copy (instances self) (* Awesome, the bloody things are mutated so we need to copy *)
 
   (** Beware: this actually replaces `mock`, not just `mock.instances` and `mock.calls` *)
-  external mockClear : unit = "mockClear" [@@bs.send.pipe: _ fn]
-  external mockReset : unit = "mockReset" [@@bs.send.pipe: _ fn]
-  external mockImplementation : 'fn -> 'self = "mockImplementation" [@@bs.send.pipe: ('fn, _, _) fn as 'self]
-  external mockImplementationOnce : 'fn -> 'self = "mockImplementationOnce" [@@bs.send.pipe: ('fn, _, _) fn as 'self]
-  external mockReturnThis : unit = "mockReturnThis" [@@bs.send.pipe: (_, _, 'ret) fn] (* not type safe, we don't know what `this` actually is *)
-  external mockReturnValue : 'ret -> 'self = "mockReturnValue" [@@bs.send.pipe: (_, _, 'ret) fn as 'self]
-  external mockReturnValueOnce : 'ret -> 'self = "mockReturnValueOnce" [@@bs.send.pipe: (_, _, 'ret) fn as 'self]
+  external mockClear : unit = "mockClear" [@@mel.send.pipe: _ fn]
+  external mockReset : unit = "mockReset" [@@mel.send.pipe: _ fn]
+  external mockImplementation : 'fn -> 'self = "mockImplementation" [@@mel.send.pipe: ('fn, _, _) fn as 'self]
+  external mockImplementationOnce : 'fn -> 'self = "mockImplementationOnce" [@@mel.send.pipe: ('fn, _, _) fn as 'self]
+  external mockReturnThis : unit = "mockReturnThis" [@@mel.send.pipe: (_, _, 'ret) fn] (* not type safe, we don't know what `this` actually is *)
+  external mockReturnValue : 'ret -> 'self = "mockReturnValue" [@@mel.send.pipe: (_, _, 'ret) fn as 'self]
+  external mockReturnValueOnce : 'ret -> 'self = "mockReturnValueOnce" [@@mel.send.pipe: (_, _, 'ret) fn as 'self]
 end
 
 module Jest = struct
-  external clearAllTimers : unit -> unit = "jest.clearAllTimers" [@@bs.val]
-  external runAllTicks : unit -> unit = "jest.runAllTicks" [@@bs.val]
-  external runAllTimers : unit -> unit = "jest.runAllTimers" [@@bs.val]
-  external runAllImmediates : unit -> unit = "jest.runAllImmediates" [@@bs.val]
-  external runTimersToTime : int -> unit = "jest.runTimersToTime" [@@bs.val]
-  external advanceTimersByTime : int -> unit = "jest.advanceTimersByTime" [@@bs.val]
-  external runOnlyPendingTimers : unit -> unit = "jest.runOnlyPendingTimers" [@@bs.val]
-  external useFakeTimers : unit -> unit = "jest.useFakeTimers" [@@bs.val]
-  external useRealTimers : unit -> unit = "jest.useRealTimers" [@@bs.val]
+  external clearAllTimers : unit -> unit = "jest.clearAllTimers"
+  external runAllTicks : unit -> unit = "jest.runAllTicks"
+  external runAllTimers : unit -> unit = "jest.runAllTimers"
+  external runAllImmediates : unit -> unit = "jest.runAllImmediates"
+  external runTimersToTime : int -> unit = "jest.runTimersToTime"
+  external advanceTimersByTime : int -> unit = "jest.advanceTimersByTime"
+  external runOnlyPendingTimers : unit -> unit = "jest.runOnlyPendingTimers"
+  external useFakeTimers : unit -> unit = "jest.useFakeTimers"
+  external useRealTimers : unit -> unit = "jest.useRealTimers"
 end
 
 module JestJs = struct
   (** experimental *)
 
-  external disableAutomock : unit -> unit = "jest.disableAutomock" [@@bs.val]
-  external enableAutomock : unit -> unit = "jest.enableAutomock" [@@bs.val]
+  external disableAutomock : unit -> unit = "jest.disableAutomock"
+  external enableAutomock : unit -> unit = "jest.enableAutomock"
   (* genMockFromModule *)
-  external resetModules : unit -> unit = "jest.resetModules" [@@bs.val]
-  external inferred_fn : unit -> ('a -> 'b Js.undefined [@bs], 'a, 'b Js.undefined) MockJs.fn = "jest.fn" [@@bs.val] (* not sure how useful this really is *)
-  external fn : ('a -> 'b) -> ('a -> 'b, 'a, 'b) MockJs.fn = "jest.fn" [@@bs.val]
-  external fn2 : ('a -> 'b -> 'c [@bs]) -> (('a -> 'b -> 'c [@bs]), 'a * 'b, 'c) MockJs.fn = "jest.fn" [@@bs.val]
+  external resetModules : unit -> unit = "jest.resetModules"
+  external inferred_fn : unit -> ('a -> 'b Js.undefined [@u], 'a, 'b Js.undefined) MockJs.fn = "jest.fn" (* not sure how useful this really is *)
+  external fn : ('a -> 'b) -> ('a -> 'b, 'a, 'b) MockJs.fn = "jest.fn"
+  external fn2 : ('a -> 'b -> 'c [@u]) -> (('a -> 'b -> 'c [@u]), 'a * 'b, 'c) MockJs.fn = "jest.fn"
   (* TODO
-  external fn3 : ('a -> 'b -> 'c -> 'd) -> ('a * 'b * 'c) MockJs.fn = "jest.fn" [@@bs.val]
-  external fn4 : ('a -> 'b -> 'c -> 'd -> 'e) -> ('a * 'b * 'c * 'd) MockJs.fn = "jest.fn" [@@bs.val]
-  external fn5 : ('a -> 'b -> 'c -> 'd -> 'e -> 'f) -> ('a * 'a * 'c * 'd * 'e) MockJs.fn = "jest.fn" [@@bs.val]
-  external fn6 : ('a -> 'b -> 'c -> 'd -> 'e -> 'f -> 'g) -> ('a * 'b * 'c * 'd * 'e * 'f) MockJs.fn = "jest.fn" [@@bs.val]
+  external fn3 : ('a -> 'b -> 'c -> 'd) -> ('a * 'b * 'c) MockJs.fn = "jest.fn"
+  external fn4 : ('a -> 'b -> 'c -> 'd -> 'e) -> ('a * 'b * 'c * 'd) MockJs.fn = "jest.fn"
+  external fn5 : ('a -> 'b -> 'c -> 'd -> 'e -> 'f) -> ('a * 'a * 'c * 'd * 'e) MockJs.fn = "jest.fn"
+  external fn6 : ('a -> 'b -> 'c -> 'd -> 'e -> 'f -> 'g) -> ('a * 'b * 'c * 'd * 'e * 'f) MockJs.fn = "jest.fn"
   *)
-  (* external isMockFunction : MockJs.fn -> Js.boolean = "jest.isMockFunction" [@@bs.val] *) (* pointless with types? *)
-  external mock : string -> unit = "jest.mock" [@@bs.val]
-  external mockWithFactory : string -> (unit -> 'a) ->unit = "jest.mock" [@@bs.val]
-  external mockVirtual : string -> (unit -> 'a) -> < .. > Js.t -> unit = "jest.mock" [@@bs.val]
+  (* external isMockFunction : MockJs.fn -> Js.boolean = "jest.isMockFunction" *) (* pointless with types? *)
+  external mock : string -> unit = "jest.mock"
+  external mockWithFactory : string -> (unit -> 'a) ->unit = "jest.mock"
+  external mockVirtual : string -> (unit -> 'a) -> < .. > Js.t -> unit = "jest.mock"
   (* TODO If this is merely defined, babel-plugin-jest-hoist fails with "The second argument of `jest.mock` must be a function." Silly thing.
   let mockVirtual : string -> (unit -> 'a) -> unit =
-    fun moduleName factory -> mockVirtual moduleName factory [%bs.obj { _virtual = Js.true_ }]
+    fun moduleName factory -> mockVirtual moduleName factory [%mel.obj { _virtual = Js.true_ }]
   *)
-  external clearAllMocks : unit -> unit = "jest.clearAllMocks" [@@bs.val]
-  external resetAllMocks : unit -> unit = "jest.resetAllMocks" [@@bs.val]
-  external setMock : string -> < .. > Js.t -> unit = "jest.setMock" [@@bs.val]
-  external unmock : string -> unit = "jest.unmock" [@@bs.val]
-  external spyOn : (< .. > Js.t as 'this) -> string -> (unit, unit, 'this) MockJs.fn = "jest.spyOn" [@@bs.val] (* this is a bit too dynamic *)
+  external clearAllMocks : unit -> unit = "jest.clearAllMocks"
+  external resetAllMocks : unit -> unit = "jest.resetAllMocks"
+  external setMock : string -> < .. > Js.t -> unit = "jest.setMock"
+  external unmock : string -> unit = "jest.unmock"
+  external spyOn : (< .. > Js.t as 'this) -> string -> (unit, unit, 'this) MockJs.fn = "jest.spyOn" (* this is a bit too dynamic *)
 end

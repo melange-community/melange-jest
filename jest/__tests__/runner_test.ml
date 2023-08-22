@@ -344,7 +344,7 @@ let () =
     Skip.testPromise "Skip.testPromise" (fun () ->
       Js.Promise.resolve false);
     Skip.testPromise "testPromise - timeout" ~timeout:1 (fun () ->
-      Js.Promise.make (fun ~resolve ~reject:_ -> (resolve false)[@bs]));
+      Js.Promise.make (fun ~resolve ~reject:_ -> (resolve false)[@u]));
 
     Skip.testAll "testAll" ["foo"; "bar"; "baz"] (fun _ ->
       false);

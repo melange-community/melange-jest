@@ -13,16 +13,16 @@ module Runner (A : Asserter) : sig
 
   val describe : string -> (unit -> unit) -> unit
 
-  external beforeAll : (unit -> unit [@bs.uncurry]) -> unit = "beforeAll" [@@bs.val]
+  external beforeAll : (unit -> unit [@mel.uncurry]) -> unit = "beforeAll"
   val beforeAllAsync : ?timeout:int -> ((unit -> unit) -> unit) -> unit
   val beforeAllPromise : ?timeout:int -> (unit -> 'a Js.Promise.t) -> unit
-  external beforeEach : (unit -> unit [@bs.uncurry]) -> unit = "beforeEach" [@@bs.val]
+  external beforeEach : (unit -> unit [@mel.uncurry]) -> unit = "beforeEach"
   val beforeEachAsync : ?timeout:int -> ((unit -> unit) -> unit) -> unit
   val beforeEachPromise : ?timeout:int -> (unit -> 'a Js.Promise.t) -> unit
-  external afterAll : (unit -> unit [@bs.uncurry]) -> unit = "afterAll" [@@bs.val]
+  external afterAll : (unit -> unit [@mel.uncurry]) -> unit = "afterAll"
   val afterAllAsync : ?timeout:int -> ((unit -> unit) -> unit) -> unit
   val afterAllPromise : ?timeout:int -> (unit -> 'a Js.Promise.t) -> unit
-  external afterEach : (unit -> unit [@bs.uncurry]) -> unit = "afterEach" [@@bs.val]
+  external afterEach : (unit -> unit [@mel.uncurry]) -> unit = "afterEach"
   val afterEachAsync : ?timeout:int -> ((unit -> unit) -> unit) -> unit
   val afterEachPromise : ?timeout:int -> (unit -> 'a Js.Promise.t) -> unit
 
@@ -50,16 +50,16 @@ val testAll : string -> 'a list -> ('a -> assertion) -> unit
 
 val describe : string -> (unit -> unit) -> unit
 
-external beforeAll : (unit -> unit [@bs.uncurry]) -> unit = "beforeAll" [@@bs.val]
+external beforeAll : (unit -> unit [@mel.uncurry]) -> unit = "beforeAll"
 val beforeAllAsync : ?timeout:int -> ((unit -> unit) -> unit) -> unit
 val beforeAllPromise : ?timeout:int -> (unit -> 'a Js.Promise.t) -> unit
-external beforeEach : (unit -> unit [@bs.uncurry]) -> unit = "beforeEach" [@@bs.val]
+external beforeEach : (unit -> unit [@mel.uncurry]) -> unit = "beforeEach"
 val beforeEachAsync : ?timeout:int -> ((unit -> unit) -> unit) -> unit
 val beforeEachPromise : ?timeout:int -> (unit -> 'a Js.Promise.t) -> unit
-external afterAll : (unit -> unit [@bs.uncurry]) -> unit = "afterAll" [@@bs.val]
+external afterAll : (unit -> unit [@mel.uncurry]) -> unit = "afterAll"
 val afterAllAsync : ?timeout:int -> ((unit -> unit) -> unit) -> unit
 val afterAllPromise : ?timeout:int -> (unit -> 'a Js.Promise.t) -> unit
-external afterEach : (unit -> unit [@bs.uncurry]) -> unit = "afterEach" [@@bs.val]
+external afterEach : (unit -> unit [@mel.uncurry]) -> unit = "afterEach"
 val afterEachAsync : ?timeout:int -> ((unit -> unit) -> unit) -> unit
 val afterEachPromise : ?timeout:int -> (unit -> 'a Js.Promise.t) -> unit
 
@@ -154,49 +154,49 @@ module MockJs : sig
 
   val new0 : (unit -> 'ret, unit, 'ret) fn -> 'ret
   val new1 : 'a -> ('a -> 'ret, 'a, 'ret) fn -> 'ret
-  val new2 : 'a -> 'b -> (('a -> 'b -> 'ret) [@bs], 'a * 'b, 'ret) fn -> 'ret
+  val new2 : 'a -> 'b -> (('a -> 'b -> 'ret) [@u], 'a * 'b, 'ret) fn -> 'ret
 
   external fn : ('fn, _, _) fn -> 'fn = "%identity"
   val calls : (_, 'args, _) fn -> 'args array
   val instances : (_, _, 'ret) fn -> 'ret array
 
   (** Beware: this actually replaces `mock`, not just `mock.instances` and `mock.calls` *)
-  external mockClear : unit = "mockClear" [@@bs.send.pipe: _ fn]
-  external mockReset : unit = "mockReset" [@@bs.send.pipe: _ fn]
-  external mockImplementation : 'fn -> 'self = "mockImplementation" [@@bs.send.pipe: ('fn, _, _) fn as 'self]
-  external mockImplementationOnce : 'fn -> 'self = "mockImplementationOnce" [@@bs.send.pipe: ('fn, _, _) fn as 'self]
-  external mockReturnThis : unit = "mockReturnThis" [@@bs.send.pipe: (_, _, 'ret) fn] (* not type safe, we don't know what `this` actually is *)
-  external mockReturnValue : 'ret -> 'self = "mockReturnValue" [@@bs.send.pipe: (_, _, 'ret) fn as 'self]
-  external mockReturnValueOnce : 'ret -> 'self = "mockReturnValueOnce" [@@bs.send.pipe: (_, _, 'ret) fn as 'self]
+  external mockClear : unit = "mockClear" [@@mel.send.pipe: _ fn]
+  external mockReset : unit = "mockReset" [@@mel.send.pipe: _ fn]
+  external mockImplementation : 'fn -> 'self = "mockImplementation" [@@mel.send.pipe: ('fn, _, _) fn as 'self]
+  external mockImplementationOnce : 'fn -> 'self = "mockImplementationOnce" [@@mel.send.pipe: ('fn, _, _) fn as 'self]
+  external mockReturnThis : unit = "mockReturnThis" [@@mel.send.pipe: (_, _, 'ret) fn] (* not type safe, we don't know what `this` actually is *)
+  external mockReturnValue : 'ret -> 'self = "mockReturnValue" [@@mel.send.pipe: (_, _, 'ret) fn as 'self]
+  external mockReturnValueOnce : 'ret -> 'self = "mockReturnValueOnce" [@@mel.send.pipe: (_, _, 'ret) fn as 'self]
 end
 
 module Jest : sig
-  external clearAllTimers : unit -> unit = "jest.clearAllTimers" [@@bs.val]
-  external runAllTicks : unit -> unit = "jest.runAllTicks" [@@bs.val]
-  external runAllTimers : unit -> unit = "jest.runAllTimers" [@@bs.val]
-  external runAllImmediates : unit -> unit = "jest.runAllImmediates" [@@bs.val]
-  external runTimersToTime : int -> unit = "jest.runTimersToTime" [@@bs.val]
-  external advanceTimersByTime : int -> unit = "jest.advanceTimersByTime" [@@bs.val]
-  external runOnlyPendingTimers : unit -> unit = "jest.runOnlyPendingTimers" [@@bs.val]
-  external useFakeTimers : unit -> unit = "jest.useFakeTimers" [@@bs.val]
-  external useRealTimers : unit -> unit = "jest.useRealTimers" [@@bs.val]
+  external clearAllTimers : unit -> unit = "jest.clearAllTimers"
+  external runAllTicks : unit -> unit = "jest.runAllTicks"
+  external runAllTimers : unit -> unit = "jest.runAllTimers"
+  external runAllImmediates : unit -> unit = "jest.runAllImmediates"
+  external runTimersToTime : int -> unit = "jest.runTimersToTime"
+  external advanceTimersByTime : int -> unit = "jest.advanceTimersByTime"
+  external runOnlyPendingTimers : unit -> unit = "jest.runOnlyPendingTimers"
+  external useFakeTimers : unit -> unit = "jest.useFakeTimers"
+  external useRealTimers : unit -> unit = "jest.useRealTimers"
 end
 
 module JestJs : sig
   (** experimental *)
 
-  external disableAutomock : unit -> unit = "jest.disableAutomock" [@@bs.val]
-  external enableAutomock : unit -> unit = "jest.enableAutomock" [@@bs.val]
-  external resetModules : unit -> unit = "jest.resetModules" [@@bs.val]
-  external inferred_fn : unit -> ('a -> 'b Js.undefined [@bs], 'a, 'b Js.undefined) MockJs.fn = "jest.fn" [@@bs.val]
-  external fn : ('a -> 'b) -> ('a -> 'b, 'a, 'b) MockJs.fn = "jest.fn" [@@bs.val]
-  external fn2 : ('a -> 'b -> 'c [@bs]) -> (('a -> 'b -> 'c [@bs]), 'a * 'b, 'c) MockJs.fn = "jest.fn" [@@bs.val]
-  external mock : string -> unit = "jest.mock" [@@bs.val]
-  external mockWithFactory : string -> (unit -> 'a) ->unit = "jest.mock" [@@bs.val]
-  external mockVirtual : string -> (unit -> 'a) -> < .. > Js.t -> unit = "jest.mock" [@@bs.val]
-  external clearAllMocks : unit -> unit = "jest.clearAllMocks" [@@bs.val]
-  external resetAllMocks : unit -> unit = "jest.resetAllMocks" [@@bs.val]
-  external setMock : string -> < .. > Js.t -> unit = "jest.setMock" [@@bs.val]
-  external unmock : string -> unit = "jest.unmock" [@@bs.val]
-  external spyOn : (< .. > Js.t as 'this) -> string -> (unit, unit, 'this) MockJs.fn = "jest.spyOn" [@@bs.val]
+  external disableAutomock : unit -> unit = "jest.disableAutomock"
+  external enableAutomock : unit -> unit = "jest.enableAutomock"
+  external resetModules : unit -> unit = "jest.resetModules"
+  external inferred_fn : unit -> ('a -> 'b Js.undefined [@u], 'a, 'b Js.undefined) MockJs.fn = "jest.fn"
+  external fn : ('a -> 'b) -> ('a -> 'b, 'a, 'b) MockJs.fn = "jest.fn"
+  external fn2 : ('a -> 'b -> 'c [@u]) -> (('a -> 'b -> 'c [@u]), 'a * 'b, 'c) MockJs.fn = "jest.fn"
+  external mock : string -> unit = "jest.mock"
+  external mockWithFactory : string -> (unit -> 'a) ->unit = "jest.mock"
+  external mockVirtual : string -> (unit -> 'a) -> < .. > Js.t -> unit = "jest.mock"
+  external clearAllMocks : unit -> unit = "jest.clearAllMocks"
+  external resetAllMocks : unit -> unit = "jest.resetAllMocks"
+  external setMock : string -> < .. > Js.t -> unit = "jest.setMock"
+  external unmock : string -> unit = "jest.unmock"
+  external spyOn : (< .. > Js.t as 'this) -> string -> (unit, unit, 'this) MockJs.fn = "jest.spyOn"
 end

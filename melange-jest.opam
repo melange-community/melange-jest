@@ -37,3 +37,8 @@ build: [
   ]
 ]
 dev-repo: "git+https://github.com/melange-community/melange-jest.git"
+pin-depends: [
+  [ "melange.dev" "git+https://github.com/melange-re/melange.git#a662d964185d862bc31e7854cf0c9988d6f23429" ]
+  [ "melange-webapi.dev" "git+https://github.com/melange-community/melange-webapi.git#5689d101c5fc6c0d8033ddf2af3a5d0c18e855e7" ]
+  [ "melange-fetch.dev" "git+https://github.com/melange-community/melange-fetch.git#d2183ec245cbf5c7a8f99f8c41d2de0758c8cda7" ]
+]

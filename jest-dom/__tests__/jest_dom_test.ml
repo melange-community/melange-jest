@@ -203,14 +203,14 @@ let _ =
       render
         {|<form data-testid="form"><label for="title">Job title</label><input type="text" id="title" name="title" value="CEO" /></form>|}
       |> queryByTestId "form" |> expect
-      |> toHaveFormValues [%bs.obj { title = "CEO" }])
+      |> toHaveFormValues [%mel.obj { title = "CEO" }])
 
 let _ =
   test "not toHaveFormValues" (fun () ->
       render
         {|<form data-testid="form"><label for="title">Job title</label><input type="text" id="title" name="title" value="CEO" /></form>|}
       |> queryByTestId "form" |> expect |> not_
-      |> toHaveFormValues [%bs.obj { title = "CTO" }])
+      |> toHaveFormValues [%mel.obj { title = "CTO" }])
 
 let _ =
   test "toHaveStyle (string)" (fun () ->
@@ -228,13 +228,13 @@ let _ =
   test "toHaveStyle (object)" (fun () ->
       render {|<span style="color: rebeccapurple" data-testid="span"></span>|}
       |> queryByTestId "span" |> expect
-      |> toHaveStyle (`Obj [%bs.obj { color = "rebeccapurple" }]))
+      |> toHaveStyle (`Obj [%mel.obj { color = "rebeccapurple" }]))
 
 let _ =
   test "not toHaveStyle (object)" (fun () ->
       render {|<span style="display: none" data-testid="span"></span>|}
       |> queryByTestId "span" |> expect |> not_
-      |> toHaveStyle (`Obj [%bs.obj { display = "inline-block" }]))
+      |> toHaveStyle (`Obj [%mel.obj { display = "inline-block" }]))
 
 let _ =
   test "toHaveTextContent (string)" (fun () ->
@@ -259,13 +259,13 @@ let _ =
   test "toHaveTextContent (regex)" (fun () ->
       render {|<span data-testid="span">Step 1 of 4</span>|}
       |> queryByTestId "span" |> expect
-      |> toHaveTextContent (`RegExp [%bs.re "/Step \\d of \\d/"]))
+      |> toHaveTextContent (`RegExp [%mel.re "/Step \\d of \\d/"]))
 
 let _ =
   test "not toHaveTextContent (regex)" (fun () ->
       render {|<span data-testid="span">Step 2 of 4</span>|}
       |> queryByTestId "span" |> expect |> not_
-      |> toHaveTextContent (`RegExp [%bs.re "/^\\d of 4$/"]))
+      |> toHaveTextContent (`RegExp [%mel.re "/^\\d of 4$/"]))
 
 let _ =
   test "toHaveValue (string)" (fun () ->
@@ -321,13 +321,13 @@ let _ =
   test "toHaveDisplayValue (regex)" (fun () ->
       render {|<input data-testid="input" value="Test" />|}
       |> queryByTestId "input" |> expect
-      |> toHaveDisplayValue (`RegExp [%bs.re "/^Te/"]))
+      |> toHaveDisplayValue (`RegExp [%mel.re "/^Te/"]))
 
 let _ =
   test "not toHaveDisplayValue (regex)" (fun () ->
       render {|<input data-testid="input" />|}
       |> queryByTestId "input" |> expect |> not_
-      |> toHaveDisplayValue (`RegExp [%bs.re "/Tt/"]))
+      |> toHaveDisplayValue (`RegExp [%mel.re "/Tt/"]))
 
 let _ =
   test "toHaveDisplayValue (array)" (fun () ->
@@ -383,11 +383,11 @@ let _ =
       render
         {|<span><button data-testid="button" aria-label="Close" aria-describedby="description-close">X</button><div id="description-close">Closing will discard any changes</div></span>|}
       |> queryByTestId "button" |> expect
-      |> toHaveAccessibleDescription (`RegExp [%bs.re "/will discard/"]))
+      |> toHaveAccessibleDescription (`RegExp [%mel.re "/will discard/"]))
 
 let _ =
   test "not toHaveAccessibleDescription (regex)" (fun () ->
       render
         {|<span><button data-testid="button" aria-label="Close" aria-describedby="description-close">X</button><div id="description-close">Closing will discard any changes</div></span>|}
       |> queryByTestId "button" |> expect |> not_
-      |> toHaveAccessibleDescription (`RegExp [%bs.re "/^Other/"]))
+      |> toHaveAccessibleDescription (`RegExp [%mel.re "/^Other/"]))
