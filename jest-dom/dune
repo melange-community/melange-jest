@@ -3,6 +3,7 @@
 (library
  (name jestDom)
  (public_name melange-jest.jest-dom)
- (libraries melange-jest.jest)
+ (libraries melange-jest.jest melange.dom)
  (modes melange)
- (preprocess (pps melange.ppx)))
+ (preprocess
+  (pps melange.ppx)))

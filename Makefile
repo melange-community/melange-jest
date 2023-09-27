@@ -13,7 +13,7 @@ help: ## Print this help message
 
 .PHONY: create-switch
 create-switch: ## Create opam switch
-	opam switch create . 4.14.1 -y --deps-only
+	opam switch create . 5.1.0~rc3 -y --deps-only
 
 .PHONY: init
 init: create-switch install ## Configure everything to develop this repository in local
@@ -23,16 +23,15 @@ install: ## Install development dependencies
 	yarn
 	opam update
 	opam install -y . --deps-only --with-test
-	# just used to build the examples
-	opam pin add melange-webapi.dev -y git+https://github.com/melange-community/melange-webapi.git#074364db83ecaff2b9ec36eef7a22dad3158b759
+	opam-check-npm-deps
 
 .PHONY: build
 build: ## Build the project
-	$(DUNE) build @melange
+	$(DUNE) build
 
 .PHONY: build_verbose
-build_verbose: ## Build the project
-	$(DUNE) build --verbose @melange
+build_verbose: ## Build the project in verbose mode
+	$(DUNE) build --verbose
 
 .PHONY: clean
 clean: ## Clean build artifacts and other generated files

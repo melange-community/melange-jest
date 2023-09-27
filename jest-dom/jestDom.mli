@@ -4,18 +4,18 @@ type t = Dom.element
 module HaveClass : sig
   type options = < exact : bool Js.undefined > Js.t
 
-  external makeOptions : ?exact:bool -> unit -> options = "" [@@bs.obj]
+  external makeOptions : ?exact:bool -> unit -> options = "" [@@mel.obj]
 end
 
 module TextContent : sig
   type options = < normalizeWhitespace : bool Js.undefined > Js.t
 
   external makeOptions : ?normalizeWhitespace:bool -> unit -> options = ""
-    [@@bs.obj]
+    [@@mel.obj]
 end
 
-external expect : t -> expect = "expect" [@@bs.val]
-external not_ : expect -> expect = "not" [@@bs.get]
+external expect : t -> expect = "expect"
+external not_ : expect -> expect = "not" [@@mel.get]
 val toBeDisabled : expect -> Jest.assertion
 val toBeEnabled : expect -> Jest.assertion
 val toBeEmptyDOMElement : expect -> Jest.assertion
