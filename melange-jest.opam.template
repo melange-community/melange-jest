@@ -1,0 +1,5 @@
+depexts: [
+  ["jest"] {npm-version = "^26.5.2"}
+  ["@testing-library/jest-dom"] {npm-version = "^5.10.0"}
+]
+
