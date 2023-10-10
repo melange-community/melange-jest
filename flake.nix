@@ -32,7 +32,7 @@
           src = ./.;
           nativeBuildInputs = with pkgs.ocamlPackages; [ melange ];
           propagatedBuildInputs = with pkgs.ocamlPackages; [ melange ];
-          doCheck = false;
+          doCheck = true;
           nativeCheckInputs = [ reason nodejs_latest ];
           checkInputs = [ melange-webapi ];
         };
