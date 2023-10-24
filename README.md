@@ -34,7 +34,6 @@ describe("Expect.Operators", () => {
       expect(1 + 2) === 3)
   }
 );
-
 ```
 
 See [the jest tests](./jest/__tests__/) or [the jest-dom tests](./jest-dom/__tests__/) for more examples.
@@ -45,8 +44,8 @@ Install [opam](https://opam.ocaml.org/) package manager.
 
 Then:
 
-```
-opam pin add melange-jest.dev git+https://github.com/melange-community/melange-jest.git#main
+```bash
+opam install melange-jest
 ```
 
 The bindings support the following versions of the `jest`
@@ -70,7 +69,7 @@ If you want to use `jest-dom`, you will need the following npm package:
 
 Add `melange-jest.jest` to the `libraries` field in your `dune` file:
 
-```dune
+```clojure
 ; ...
   (libraries melange-jest.jest)
 ; ...
@@ -78,7 +77,7 @@ Add `melange-jest.jest` to the `libraries` field in your `dune` file:
 
 If you need `jest-dom`, add `melange-jest.jest-dom` to the `libraries` in your `dune` file:
 
-```dune
+```clojure
 ; ...
   (libraries melange-jest.jest melange-jest.jest-dom)
 ; ...
@@ -110,7 +109,7 @@ By default, Dune will ignore folders starting with underscore, so to add `__test
 
 In a `dune` file:
 
-```
+```clojure
 (dirs :standard __tests__)
 ```
 
@@ -122,7 +121,7 @@ As Melange allows to have generate both `es6` and `commonjs` outputs in the same
 
 In a `dune` file:
 
-  ```
+  ```clojure
   (melange.emit
     (target test)
     (module_systems commonjs)
