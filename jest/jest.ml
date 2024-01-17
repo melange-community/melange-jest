@@ -150,7 +150,9 @@ module Runner (A : Asserter) = struct
 
   let testAll name inputs callback =
     inputs |> List.iter (fun input ->
-      let name = {j|$name - $input|j} in
+      let name =
+        let input: string = Obj.magic input in
+        {j|$name - $input|j} in
       _test name (fun () ->
         affirm @@ callback input;
         Js.undefined))
@@ -232,7 +234,10 @@ module Runner (A : Asserter) = struct
 
     let testAll name inputs callback =
       inputs |> List.iter (fun input ->
-        let name = {j|$name - $input|j} in
+        let name =
+          let input: string = Obj.magic input in
+          {j|$name - $input|j}
+        in
         _test name (fun () ->
           affirm @@ callback input;
           Js.undefined))
@@ -252,7 +257,10 @@ module Runner (A : Asserter) = struct
       testPromise name callback
     let testAll name inputs callback =
       inputs |> List.iter (fun input ->
-        let name = {j|$name - $input|j} in
+        let name =
+          let input: string = Obj.magic input in
+          {j|$name - $input|j}
+        in
         test name (fun () -> callback input))
     external describe : string -> (unit -> unit Js.undefined [@mel.uncurry]) -> unit = "describe.skip"
     let describe label f =
