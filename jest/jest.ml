@@ -46,6 +46,8 @@ module type Asserter = sig
   val affirm : 'a t -> unit
 end
 
+external inputAsString: 'a -> string = "%identity"
+
 (* internal *)
 module LLExpect : sig
   type 'a t = assertion
@@ -151,7 +153,7 @@ module Runner (A : Asserter) = struct
   let testAll name inputs callback =
     inputs |> List.iter (fun input ->
       let name =
-        let input: string = Obj.magic input in
+        let input = inputAsString input in
         {j|$name - $input|j} in
       _test name (fun () ->
         affirm @@ callback input;
@@ -235,7 +237,7 @@ module Runner (A : Asserter) = struct
     let testAll name inputs callback =
       inputs |> List.iter (fun input ->
         let name =
-          let input: string = Obj.magic input in
+          let input: string = inputAsString input in
           {j|$name - $input|j}
         in
         _test name (fun () ->
@@ -258,7 +260,7 @@ module Runner (A : Asserter) = struct
     let testAll name inputs callback =
       inputs |> List.iter (fun input ->
         let name =
-          let input: string = Obj.magic input in
+          let input: string = inputAsString input in
           {j|$name - $input|j}
         in
         test name (fun () -> callback input))
