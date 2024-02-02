@@ -1,4 +1,5 @@
 {
+  "name": "melange-jest",
   "license": "MIT",
   "devDependencies": {
     "@testing-library/jest-dom": "^5.10.0",

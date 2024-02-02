@@ -23,7 +23,22 @@
           })
           melange-src.overlays.default
         ];
-        inherit (pkgs) nodejs_latest lib stdenv darwin;
+        inherit (pkgs) nodejs_latest lib stdenv darwin yarn cacert;
+
+        checkPhaseNodePackages = pkgs.buildNpmPackage {
+          name = "melange-jest-deps";
+          version = "0.0.0-dev";
+
+          src = ./.;
+          dontNpmBuild = true;
+          npmDepsHash = "sha256-FJEGqD2SwkGur+dSWtMW1Jr3Rmh68nQGUtEoprkXSfo=";
+          installPhase = ''
+            runHook preInstall
+            mkdir -p "$out"
+            cp -r ./node_modules "$out/node_modules"
+            runHook postInstall
+          '';
+        };
 
         melange-jest = with pkgs.ocamlPackages; buildDunePackage {
           pname = "melange-jest";
@@ -33,8 +48,13 @@
           nativeBuildInputs = with pkgs.ocamlPackages; [ melange ];
           propagatedBuildInputs = with pkgs.ocamlPackages; [ melange ];
           doCheck = true;
-          nativeCheckInputs = [ reason nodejs_latest ];
-          checkInputs = [ melange-webapi ];
+          nativeCheckInputs = [ reason nodejs_latest yarn cacert ];
+          checkInputs = [ melange-webapi cacert checkPhaseNodePackages ];
+          checkPhase = ''
+            dune build @all -p melange-jest --display=short
+            ln -sfn "${checkPhaseNodePackages}/node_modules" ./node_modules
+            ./node_modules/.bin/jest
+          '';
         };
 
         mkShell = { buildInputs ? [ ] }: pkgs.mkShell {
