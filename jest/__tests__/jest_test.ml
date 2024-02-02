@@ -1,11 +1,3 @@
-[@@@mel.config { flags = [| "--preamble";
-{|
-/**
- * @jest-environment node
- */
-|}
-|] }]
-
 open Jest
 open Expect
 open! Expect.Operators
