@@ -25,6 +25,21 @@
         ];
         inherit (pkgs) nodejs_latest lib stdenv darwin yarn cacert;
 
+        checkPhaseNodePackages = pkgs.buildNpmPackage {
+          name = "melange-jest-deps";
+          version = "0.0.0-dev";
+
+          src = ./.;
+          dontNpmBuild = true;
+          npmDepsHash = "sha256-FJEGqD2SwkGur+dSWtMW1Jr3Rmh68nQGUtEoprkXSfo=";
+          installPhase = ''
+            runHook preInstall
+            mkdir -p "$out"
+            cp -r ./node_modules "$out/node_modules"
+            runHook postInstall
+          '';
+        };
+
         melange-jest = with pkgs.ocamlPackages; buildDunePackage {
           pname = "melange-jest";
           version = "dev";
@@ -34,10 +49,10 @@
           propagatedBuildInputs = with pkgs.ocamlPackages; [ melange ];
           doCheck = true;
           nativeCheckInputs = [ reason nodejs_latest yarn cacert ];
-          checkInputs = [ melange-webapi cacert ];
+          checkInputs = [ melange-webapi cacert checkPhaseNodePackages ];
           checkPhase = ''
             dune build @all -p melange-jest --display=short
-            yarn install --no-default-rc --frozen-lockfile --check-files --cache-folder .ycache && rm -rf .ycache
+            ln -sfn "${checkPhaseNodePackages}/node_modules" ./node_modules
             ./node_modules/.bin/jest
           '';
         };
