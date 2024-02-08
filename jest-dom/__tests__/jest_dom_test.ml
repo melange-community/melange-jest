@@ -1,3 +1,11 @@
+[@@@mel.config { flags = [| "--preamble";
+{|
+/**
+ * @jest-environment jsdom
+ */
+|}
+|] }]
+
 open Jest
 open JestDom
 open Webapi.Dom

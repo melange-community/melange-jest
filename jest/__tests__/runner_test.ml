@@ -224,7 +224,8 @@ let () =
     );
 
     describe "timeout should not fail suite" (fun () ->
-      afterAllAsync ~timeout:1 (fun _ ->());
+      (* In jest 27, they do. *)
+      (* afterAllAsync ~timeout:1 (fun _ ->()); *)
 
       test "" (fun () -> true); (* runner will crash if there's no tests *)
     );
@@ -262,7 +263,8 @@ let () =
     );
 
     describe "timeout should not fail suite" (fun () ->
-      afterAllPromise ~timeout:1 (fun () -> Js.Promise.make (fun ~resolve:_ ~reject:_ -> ()));
+      (* In jest 27, they do. *)
+      (* afterAllPromise ~timeout:1 (fun () -> Js.Promise.make (fun ~resolve:_ ~reject:_ -> ())); *)
 
       test "" (fun () -> true); (* runner will crash if there's no tests *)
     );

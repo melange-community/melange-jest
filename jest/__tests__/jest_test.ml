@@ -31,7 +31,7 @@ describe "Fake Timers" (fun () ->
   
   test "runAllImmediates" (fun () ->
     let flag = ref false in
-    Jest.useFakeTimers ();
+    Jest.useFakeTimers ~config:{legacyFakeTimers=true} ();
     setImmediate (fun () -> flag := true);
     let before = !flag in
     Jest.runAllImmediates ();
@@ -44,10 +44,10 @@ describe "Fake Timers" (fun () ->
     Jest.useFakeTimers ();
     setTimeout (fun () -> flag := true) 1500;
     let before = !flag in
-    Jest.runTimersToTime 1000;
+    Jest.advanceTimersByTime 1000;
     let inbetween = !flag in
-    Jest.runTimersToTime 1000;
-    
+    Jest.advanceTimersByTime 1000;
+
     expect (before, inbetween, !flag) = (false, false, true)
   );
 
@@ -90,6 +90,6 @@ describe "Fake Timers" (fun () ->
   testAsync "clearAllTimers" (fun finish ->
     Jest.useFakeTimers ();
     Jest.useRealTimers ();
-    setImmediate (fun () -> finish pass);
+    nextTick (fun () -> finish pass);
   );
 );

@@ -31,7 +31,7 @@
 
           src = ./.;
           dontNpmBuild = true;
-          npmDepsHash = "sha256-FJEGqD2SwkGur+dSWtMW1Jr3Rmh68nQGUtEoprkXSfo=";
+          npmDepsHash = "sha256-ssHwcub4A3tHvpQ929o9qImgHjmHNEsP6waQIrT1jUE=";
           installPhase = ''
             runHook preInstall
             mkdir -p "$out"
