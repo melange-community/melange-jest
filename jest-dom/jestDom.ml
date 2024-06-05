@@ -1,4 +1,4 @@
-let _ = [%mel.raw {|require('@testing-library/jest-dom')|}]
+[%%mel.raw {|import '@testing-library/jest-dom'|}]
 
 type expect
 type t = Dom.element
