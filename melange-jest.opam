@@ -15,8 +15,6 @@ depends: [
   "melange" {>= "2.0.0"}
   "reason" {with-test}
   "melange-webapi" {with-test}
-  "opam-check-npm-deps" {with-test}
-  "ocaml-lsp-server" {with-test}
   "odoc" {with-doc}
 ]
 build: [
