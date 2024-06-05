@@ -13,28 +13,28 @@ let _ =
 
 describe "inferred_fn" (fun _ ->
   test "returns undefined" (fun _ ->
-    let mockFn = JestJs.inferred_fn () in
+    let mockFn = JestJs.inferred_fn () Jest.(jest globals) in
     let fn = MockJs.fn mockFn in
     
     expect (call fn ()) |> toBeUndefined
   );
   
   test "black hole for argument type object" (fun _ ->
-    let mockFn = JestJs.inferred_fn () in
+    let mockFn = JestJs.inferred_fn () Jest.(jest globals) in
     let fn = MockJs.fn mockFn in
     
     expect (call fn [%obj { property = 42 }]) |> toBeUndefined
   );
   
   test "black hole for argument type string" (fun _ ->
-    let mockFn = JestJs.inferred_fn () in
+    let mockFn = JestJs.inferred_fn () Jest.(jest globals) in
     let fn = MockJs.fn mockFn in
     
     expect (call fn "some string") |> toBeUndefined
   );
   
   test "calls - records call arguments" (fun _ ->
-    let mockFn = JestJs.inferred_fn () in
+    let mockFn = JestJs.inferred_fn () Jest.(jest globals) in
     let fn = MockJs.fn mockFn in
     
     let _ = call fn "first" in
@@ -45,14 +45,14 @@ describe "inferred_fn" (fun _ ->
   );
 
   test "instances - sanity check - is empty array" (fun _ ->
-    let mockFn = JestJs.inferred_fn () in
+    let mockFn = JestJs.inferred_fn () Jest.(jest globals) in
     let instances  = MockJs.instances mockFn in
 
     expect instances |> toEqual [||]
   );
 
   test "instances - records created instances" (fun _ ->
-    let mockFn = JestJs.fn [%raw "function (n) { this.n = n; }"] in
+    let mockFn = JestJs.fn [%raw "function (n) { this.n = n; }"] Jest.(jest globals) in
     
     mockFn |> MockJs.new1 4 |> ignore;
     mockFn |> MockJs.new1 7 |> ignore;
@@ -63,7 +63,7 @@ describe "inferred_fn" (fun _ ->
   );
   
   test "mockClear - resets calls" (fun _ ->
-    let mockFn = JestJs.inferred_fn () in
+    let mockFn = JestJs.inferred_fn () Jest.(jest globals) in
     let fn = MockJs.fn mockFn in
     
     let before  = mockFn |> MockJs.calls in 
@@ -79,7 +79,7 @@ describe "inferred_fn" (fun _ ->
   );
   
   test "mockReset - resets calls" (fun _ ->
-    let mockFn = JestJs.inferred_fn () in
+    let mockFn = JestJs.inferred_fn () Jest.(jest globals) in
     let fn = MockJs.fn mockFn in
     
     let before  = mockFn |> MockJs.calls in 
@@ -95,7 +95,7 @@ describe "inferred_fn" (fun _ ->
   );
   
   test "mockReset - resets implementations" (fun _ ->
-    let mockFn = JestJs.inferred_fn () in
+    let mockFn = JestJs.inferred_fn () Jest.(jest globals) in
     mockFn |> MockJs.mockReturnValue (Js.Undefined.return 128) |> ignore;
     let fn = MockJs.fn mockFn in
     
@@ -110,7 +110,7 @@ describe "inferred_fn" (fun _ ->
   );
   
   test "mockImplementation - sets implementation to use for subsequent invocations" (fun _ ->
-    let mockFn = JestJs.inferred_fn () in
+    let mockFn = JestJs.inferred_fn () Jest.(jest globals) in
     let fn = MockJs.fn mockFn in
     
     let before = call fn 10 in
@@ -123,7 +123,7 @@ describe "inferred_fn" (fun _ ->
   );
   
   test "mockImplementationOnce - queues implementation for one subsequent invocation" (fun _ ->
-    let mockFn = JestJs.inferred_fn () in
+    let mockFn = JestJs.inferred_fn () Jest.(jest globals) in
     let fn = MockJs.fn mockFn in
     
     let before = call fn 10 in
@@ -137,7 +137,7 @@ describe "inferred_fn" (fun _ ->
   );
   
   test "mockReturnThis - returns `this` on subsequent invocations" (fun _ ->
-    let mockFn = JestJs.inferred_fn () in
+    let mockFn = JestJs.inferred_fn () Jest.(jest globals) in
     let this = "this" in
     let fn = bindThis (mockFn |> MockJs.fn) this in
     
@@ -151,7 +151,7 @@ describe "inferred_fn" (fun _ ->
   );
   
   test "mockReturnValue - returns given value on subsequent invocations" (fun _ ->
-    let mockFn = JestJs.inferred_fn () in
+    let mockFn = JestJs.inferred_fn () Jest.(jest globals) in
     let fn = MockJs.fn mockFn in
     
     let before = call fn 10 in
@@ -164,7 +164,7 @@ describe "inferred_fn" (fun _ ->
   );
   
   test "mockReturnValueOnce - queues implementation for one subsequent invocation" (fun _ ->
-    let mockFn = JestJs.inferred_fn () in
+    let mockFn = JestJs.inferred_fn () Jest.(jest globals) in
     let fn = MockJs.fn mockFn in
     
     let before = call fn 10 in
@@ -188,7 +188,7 @@ describe "inferred_fn" (fun _ ->
   
   test "mockClear - resets instances" (fun _ ->
 
-    let mockFn = JestJs.fn [%raw "function (n) { this.n = n; }"] in
+    let mockFn = JestJs.fn [%raw "function (n) { this.n = n; }"] Jest.(jest globals) in
     
     let before  = mockFn |> MockJs.instances in 
 
@@ -210,14 +210,14 @@ describe "inferred_fn" (fun _ ->
   
 describe "fn" (fun _ ->
   test "calls implementation" (fun _ ->
-    let mockFn = JestJs.fn (fun a -> string_of_int a) in
+    let mockFn = JestJs.fn (fun a -> string_of_int a) Jest.(jest globals) in
     let fn = MockJs.fn mockFn in
     
     expect (fn 18) |> toBe "18"
   );
   
   test "calls - records call arguments" (fun _ ->
-    let mockFn = JestJs.fn (fun a -> string_of_int a) in
+    let mockFn = JestJs.fn (fun a -> string_of_int a) Jest.(jest globals) in
     
     let _ = MockJs.fn mockFn 74 in
     let _ = MockJs.fn mockFn 89435 in
@@ -227,7 +227,7 @@ describe "fn" (fun _ ->
   );
   
   Skip.test "mockClear - resets calls" (fun _ ->
-    let mockFn = JestJs.fn (fun a -> string_of_int a) in
+    let mockFn = JestJs.fn (fun a -> string_of_int a) Jest.(jest globals) in
     
     let before = mockFn |> MockJs.calls in 
     let _ = (MockJs.fn mockFn 1, MockJs.fn mockFn 2) in
@@ -242,7 +242,7 @@ describe "fn" (fun _ ->
   );
   
   test "mockReset - resets calls" (fun _ ->
-    let mockFn = JestJs.fn (fun a -> string_of_int a) in
+    let mockFn = JestJs.fn (fun a -> string_of_int a) Jest.(jest globals) in
     let fn = MockJs.fn mockFn in
     
     let before  = mockFn |> MockJs.calls in 
@@ -259,7 +259,7 @@ describe "fn" (fun _ ->
   
   (* TODO: Actually removes the original imlementation too, causing it to return undefined, which usually won't be a valid return value for the function type it mocks *)
   Skip.test "mockReset - resets implementations" (fun _ ->
-    let mockFn = JestJs.fn (fun a -> string_of_int a) in
+    let mockFn = JestJs.fn (fun a -> string_of_int a) Jest.(jest globals) in
     mockFn |> MockJs.mockReturnValue "128" |> ignore;
     let fn = MockJs.fn mockFn in
     
@@ -274,7 +274,7 @@ describe "fn" (fun _ ->
   );
   
   test "mockImplementation - sets implementation to use for subsequent invocations" (fun _ ->
-    let mockFn = JestJs.fn (fun a -> string_of_int a) in
+    let mockFn = JestJs.fn (fun a -> string_of_int a) Jest.(jest globals) in
     let fn = MockJs.fn mockFn in
     
     let before = fn 10 in
@@ -287,7 +287,7 @@ describe "fn" (fun _ ->
   );
   
   test "mockImplementationOnce - queues implementation for one subsequent invocation" (fun _ ->
-    let mockFn = JestJs.fn (fun a -> string_of_int a) in
+    let mockFn = JestJs.fn (fun a -> string_of_int a) Jest.(jest globals) in
     let fn = MockJs.fn mockFn in
     
     let before = fn 10 in
@@ -317,7 +317,7 @@ describe "fn" (fun _ ->
   *)
   
   test "mockReturnValue - returns given value on subsequent invocations" (fun _ ->
-    let mockFn = JestJs.fn (fun a -> string_of_int a) in
+    let mockFn = JestJs.fn (fun a -> string_of_int a) Jest.(jest globals) in
     let fn = MockJs.fn mockFn in
     
     let before = fn 10 in
@@ -330,7 +330,7 @@ describe "fn" (fun _ ->
   );
   
   test "mockReturnValueOnce - queues implementation for one subsequent invocation" (fun _ ->
-    let mockFn = JestJs.fn (fun a -> string_of_int a) in
+    let mockFn = JestJs.fn (fun a -> string_of_int a) Jest.(jest globals) in
     let fn = MockJs.fn mockFn in
     
     let before = fn 10 in
@@ -346,7 +346,7 @@ describe "fn" (fun _ ->
 
 describe "fn2" (fun _ ->
   test "calls implementation" (fun _ ->
-    let mockFn = JestJs.fn2 ((fun a b -> string_of_int (a + b)) [@u]) in
+    let mockFn = JestJs.fn2 ((fun a b -> string_of_int (a + b)) [@u]) Jest.(jest globals) in
     let fn = MockJs.fn mockFn in
     
     expect (call2 fn 18 24) |> toBe "42"
@@ -366,7 +366,7 @@ describe "fn2" (fun _ ->
 
 describe "MockJs.new" (fun _ ->
   test "MockJs.new0" (fun _ ->
-    let mockFn = JestJs.fn [%raw "function () { this.n = 42; }"] in
+    let mockFn = JestJs.fn [%raw "function () { this.n = 42; }"] Jest.(jest globals) in
     
     let instance = mockFn |> MockJs.new0 in
     
@@ -374,7 +374,7 @@ describe "MockJs.new" (fun _ ->
   );
 
   test "MockJs.new1" (fun _ ->
-    let mockFn = JestJs.fn [%raw "function (n) { this.n = n; }"] in
+    let mockFn = JestJs.fn [%raw "function (n) { this.n = n; }"] Jest.(jest globals) in
     
     let instance = mockFn |> MockJs.new1 4 in
     
@@ -382,7 +382,7 @@ describe "MockJs.new" (fun _ ->
   );
 
   test "MockJs.new2" (fun _ ->
-    let mockFn  = JestJs.fn2 [%raw "function (a, b) { this.n = a * b; }"] in
+    let mockFn  = JestJs.fn2 [%raw "function (a, b) { this.n = a * b; }"] Jest.(jest globals) in
     
     let instance = mockFn |> MockJs.new2 4 7 in
     

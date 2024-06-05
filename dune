@@ -9,4 +9,4 @@
  (deps
   (alias_rec test))
  (action
-  (bash "cd %{project_root}/../../ && node --experimental-vm-modules node_modules/jest/bin/jest.js")))
+  (run node --experimental-vm-modules %{project_root}/../../node_modules/jest/bin/jest.js)))
