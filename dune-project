@@ -1,4 +1,4 @@
-(lang dune 3.8)
+(lang dune 3.9)
 
 (using melange 0.1)
 
@@ -27,7 +27,7 @@
  (description "Melange bindings for Jest JavaScript library.")
  (depends
   (melange
-   (>= "3.0.0"))
+   (>= "2.0.0"))
   (reason :with-test)
   (melange-webapi :with-test)
   (opam-check-npm-deps :with-test) ; todo: use with-dev-setup once opam 2.2 is out
