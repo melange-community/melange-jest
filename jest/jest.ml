@@ -450,10 +450,12 @@ module Jest = struct
   external runAllTicks : unit -> unit = "runAllTicks" [@@mel.send.pipe: t] 
   external runAllTimers : unit -> unit = "runAllTimers" [@@mel.send.pipe: t] 
   external runAllImmediates : unit -> unit = "runAllImmediates" [@@mel.send.pipe: t] 
-  (* external runTimersToTime : int -> unit = "runTimersToTime" [@@mel.send.pipe: t]  *)
   external advanceTimersByTime : int -> unit = "advanceTimersByTime" [@@mel.send.pipe: t] 
   external runOnlyPendingTimers : unit -> unit = "runOnlyPendingTimers" [@@mel.send.pipe: t] 
-  external useFakeTimers : unit -> unit = "useFakeTimers" [@@mel.send.pipe: t] 
+  type fakeTimersConfig = {
+    legacyFakeTimers: bool
+  }
+  external useFakeTimers : ?config:fakeTimersConfig -> unit -> unit = "useFakeTimers" [@@mel.send.pipe: t] 
   external useRealTimers : unit -> unit = "useRealTimers" [@@mel.send.pipe: t] 
 end
 

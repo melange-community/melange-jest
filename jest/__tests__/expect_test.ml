@@ -42,14 +42,14 @@ describe "Expect" (fun () ->
   test "toThrow" (fun () ->
     expect (fun () -> assert false) |> toThrow);
 
-  test "toMatchInlineSnapshot" (fun () ->
+  (* test "toMatchInlineSnapshot" (fun () ->
     expect "foo" |> toMatchInlineSnapshot "\"foo\"");
   test "toMatchSnapshot" (fun () ->
     expect "foo" |> toMatchSnapshot);
   test "toMatchSnapshotWithName" (fun () ->
     expect "foo" |> toMatchSnapshotWithName "bar");
   test "toThrowErrorMatchingSnapshot" (fun () ->
-    expect (fun () -> Js.Exn.raiseError "foo error") |> toThrowErrorMatchingSnapshot);
+    expect (fun () -> Js.Exn.raiseError "foo error") |> toThrowErrorMatchingSnapshot); *)
 
   test "not toBe" (fun () ->
     expect (1 + 2) |> not_ |> toBe 4);

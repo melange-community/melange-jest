@@ -5,7 +5,7 @@ open! Expect.Operators
 external setTimeout : (unit -> unit) -> int -> unit = "setTimeout"
 type timers
 external timers : timers = "timers" [@@mel.module]
-external setImmediate : (unit -> unit) -> unit = "setImmediate" [@@mel.send.pipe: timers]
+external setImmediate : (unit -> unit) -> unit = "setImmediate"
 external nextTick : (unit -> unit) -> unit = "process.nextTick"
 
 let () = 
@@ -31,11 +31,10 @@ describe "Fake Timers" (fun () ->
     expect (before, !flag) = (false, true)
   );
   
-  (* todo: fixme
   test "runAllImmediates" (fun () ->
     let flag = ref false in
-    Jest.useFakeTimers () Jest.(jest globals);
-    setImmediate (fun () -> flag := true) timers;
+    Jest.useFakeTimers ~config:{legacyFakeTimers=true} () Jest.(jest globals);
+    setImmediate (fun () -> flag := true);
     let before = !flag in
     Jest.runAllImmediates () Jest.(jest globals);
     
@@ -47,12 +46,12 @@ describe "Fake Timers" (fun () ->
     Jest.useFakeTimers () Jest.(jest globals);
     setTimeout (fun () -> flag := true) 1500;
     let before = !flag in
-    Jest.runTimersToTime 1000 Jest.(jest globals);
+    Jest.advanceTimersByTime 1000 Jest.(jest globals);
     let inbetween = !flag in
-    Jest.runTimersToTime 1000 Jest.(jest globals);
-    
+    Jest.advanceTimersByTime 1000 Jest.(jest globals);
+
     expect (before, inbetween, !flag) = (false, false, true)
-  ); *)
+  );
 
   test "advanceTimersByTime" (fun () ->
     let flag = ref false in
@@ -82,7 +81,7 @@ describe "Fake Timers" (fun () ->
   test "clearAllTimers" (fun () ->
     let flag = ref false in
     Jest.useFakeTimers () Jest.(jest globals);
-    setImmediate (fun () -> flag := true) timers;
+    setImmediate (fun () -> flag := true);
     let before = !flag in
     Jest.clearAllTimers () Jest.(jest globals);
     Jest.runAllTimers () Jest.(jest globals);
@@ -93,6 +92,6 @@ describe "Fake Timers" (fun () ->
   testAsync "clearAllTimers" (fun finish ->
     Jest.useFakeTimers () Jest.(jest globals);
     Jest.useRealTimers () Jest.(jest globals);
-    setImmediate (fun () -> finish pass) timers;
+    nextTick (fun () -> finish pass);
   );
 );

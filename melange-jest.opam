@@ -15,8 +15,6 @@ depends: [
   "melange" {>= "2.0.0"}
   "reason" {with-test}
   "melange-webapi" {with-test}
-  "opam-check-npm-deps" {with-test}
-  "ocaml-lsp-server" {with-test}
   "odoc" {with-doc}
 ]
 build: [
@@ -35,7 +33,8 @@ build: [
 ]
 dev-repo: "git+https://github.com/melange-community/melange-jest.git"
 depexts: [
-  ["jest"] {npm-version = "^26.5.2"}
+  ["jest"] {npm-version = "^27.0.0"}
+  ["jest-environment-jsdom"] {npm-version = "^27.0.0"}
   ["@testing-library/jest-dom"] {npm-version = "^5.10.0"}
 ]
 
