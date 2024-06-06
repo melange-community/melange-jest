@@ -171,34 +171,42 @@ module MockJs : sig
 end
 
 module Jest : sig
-  external clearAllTimers : unit -> unit = "jest.clearAllTimers"
-  external runAllTicks : unit -> unit = "jest.runAllTicks"
-  external runAllTimers : unit -> unit = "jest.runAllTimers"
-  external runAllImmediates : unit -> unit = "jest.runAllImmediates"
-  external advanceTimersByTime : int -> unit = "jest.advanceTimersByTime"
-  external runOnlyPendingTimers : unit -> unit = "jest.runOnlyPendingTimers"
+  type globals
+
+  external globals : globals = "@jest/globals" [@@mel.module]
+
+  type t
+
+  external jest : globals -> t = "jest" [@@mel.get]
+
+  external clearAllTimers : unit -> unit = "clearAllTimers" [@@mel.send.pipe: t] 
+  external runAllTicks : unit -> unit = "runAllTicks" [@@mel.send.pipe: t] 
+  external runAllTimers : unit -> unit = "runAllTimers" [@@mel.send.pipe: t] 
+  external runAllImmediates : unit -> unit = "runAllImmediates" [@@mel.send.pipe: t] 
+  external advanceTimersByTime : int -> unit = "advanceTimersByTime" [@@mel.send.pipe: t] 
+  external runOnlyPendingTimers : unit -> unit = "runOnlyPendingTimers" [@@mel.send.pipe: t] 
   type fakeTimersConfig = {
     legacyFakeTimers: bool
   }
-  external useFakeTimers : ?config:fakeTimersConfig -> unit -> unit = "jest.useFakeTimers"
-  external useRealTimers : unit -> unit = "jest.useRealTimers"
+  external useFakeTimers : ?config:fakeTimersConfig -> unit -> unit = "useFakeTimers" [@@mel.send.pipe: t] 
+  external useRealTimers : unit -> unit = "useRealTimers" [@@mel.send.pipe: t] 
 end
 
 module JestJs : sig
   (** experimental *)
 
-  external disableAutomock : unit -> unit = "jest.disableAutomock"
-  external enableAutomock : unit -> unit = "jest.enableAutomock"
-  external resetModules : unit -> unit = "jest.resetModules"
-  external inferred_fn : unit -> ('a -> 'b Js.undefined [@u], 'a, 'b Js.undefined) MockJs.fn = "jest.fn"
-  external fn : ('a -> 'b) -> ('a -> 'b, 'a, 'b) MockJs.fn = "jest.fn"
-  external fn2 : ('a -> 'b -> 'c [@u]) -> (('a -> 'b -> 'c [@u]), 'a * 'b, 'c) MockJs.fn = "jest.fn"
-  external mock : string -> unit = "jest.mock"
-  external mockWithFactory : string -> (unit -> 'a) ->unit = "jest.mock"
-  external mockVirtual : string -> (unit -> 'a) -> < .. > Js.t -> unit = "jest.mock"
-  external clearAllMocks : unit -> unit = "jest.clearAllMocks"
-  external resetAllMocks : unit -> unit = "jest.resetAllMocks"
-  external setMock : string -> < .. > Js.t -> unit = "jest.setMock"
-  external unmock : string -> unit = "jest.unmock"
-  external spyOn : (< .. > Js.t as 'this) -> string -> (unit, unit, 'this) MockJs.fn = "jest.spyOn"
+  external disableAutomock : unit -> unit = "disableAutomock"  [@@mel.send.pipe: Jest.t] 
+  external enableAutomock : unit -> unit = "enableAutomock"  [@@mel.send.pipe: Jest.t] 
+  external resetModules : unit -> unit = "resetModules"  [@@mel.send.pipe: Jest.t] 
+  external inferred_fn : unit -> ('a -> 'b Js.undefined [@u], 'a, 'b Js.undefined) MockJs.fn = "fn"  [@@mel.send.pipe: Jest.t] 
+  external fn : ('a -> 'b) -> ('a -> 'b, 'a, 'b) MockJs.fn = "fn"  [@@mel.send.pipe: Jest.t] 
+  external fn2 : ('a -> 'b -> 'c [@u]) -> (('a -> 'b -> 'c [@u]), 'a * 'b, 'c) MockJs.fn = "fn"  [@@mel.send.pipe: Jest.t] 
+  external mock : string -> unit = "mock"  [@@mel.send.pipe: Jest.t] 
+  external mockWithFactory : string -> (unit -> 'a) ->unit = "mock"  [@@mel.send.pipe: Jest.t] 
+  external mockVirtual : string -> (unit -> 'a) -> < .. > Js.t -> unit = "mock"  [@@mel.send.pipe: Jest.t] 
+  external clearAllMocks : unit -> unit = "clearAllMocks"  [@@mel.send.pipe: Jest.t] 
+  external resetAllMocks : unit -> unit = "resetAllMocks"  [@@mel.send.pipe: Jest.t] 
+  external setMock : string -> < .. > Js.t -> unit = "setMock"  [@@mel.send.pipe: Jest.t] 
+  external unmock : string -> unit = "unmock"  [@@mel.send.pipe: Jest.t] 
+  external spyOn : (< .. > Js.t as 'this) -> string -> (unit, unit, 'this) MockJs.fn = "spyOn"  [@@mel.send.pipe: Jest.t] 
 end

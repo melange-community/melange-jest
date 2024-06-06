@@ -2,5 +2,6 @@
  (target test)
  (alias test)
  (libraries jest)
+ (module_systems (es6 mjs))
  (preprocess
   (pps melange.ppx)))
