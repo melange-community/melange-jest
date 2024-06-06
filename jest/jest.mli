@@ -20,8 +20,8 @@ module Runner (A : Asserter) : sig
   val beforeEachAsync : ?timeout:int -> ((unit -> unit) -> unit) -> unit
   val beforeEachPromise : ?timeout:int -> (unit -> 'a Js.Promise.t) -> unit
   external afterAll : (unit -> unit [@mel.uncurry]) -> unit = "afterAll"
-  (* val afterAllAsync : ?timeout:int -> ((unit -> unit) -> unit) -> unit *)
-  (* val afterAllPromise : ?timeout:int -> (unit -> 'a Js.Promise.t) -> unit *)
+  val afterAllAsync : ?timeout:int -> ((unit -> unit) -> unit) -> unit
+  val afterAllPromise : ?timeout:int -> (unit -> 'a Js.Promise.t) -> unit
   external afterEach : (unit -> unit [@mel.uncurry]) -> unit = "afterEach"
   val afterEachAsync : ?timeout:int -> ((unit -> unit) -> unit) -> unit
   val afterEachPromise : ?timeout:int -> (unit -> 'a Js.Promise.t) -> unit
@@ -57,8 +57,8 @@ external beforeEach : (unit -> unit [@mel.uncurry]) -> unit = "beforeEach"
 val beforeEachAsync : ?timeout:int -> ((unit -> unit) -> unit) -> unit
 val beforeEachPromise : ?timeout:int -> (unit -> 'a Js.Promise.t) -> unit
 external afterAll : (unit -> unit [@mel.uncurry]) -> unit = "afterAll"
-(* val afterAllAsync : ?timeout:int -> ((unit -> unit) -> unit) -> unit *)
-(* val afterAllPromise : ?timeout:int -> (unit -> 'a Js.Promise.t) -> unit *)
+val afterAllAsync : ?timeout:int -> ((unit -> unit) -> unit) -> unit
+val afterAllPromise : ?timeout:int -> (unit -> 'a Js.Promise.t) -> unit
 external afterEach : (unit -> unit [@mel.uncurry]) -> unit = "afterEach"
 val afterEachAsync : ?timeout:int -> ((unit -> unit) -> unit) -> unit
 val afterEachPromise : ?timeout:int -> (unit -> 'a Js.Promise.t) -> unit

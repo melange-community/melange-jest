@@ -197,7 +197,7 @@ let () =
     );
   );
   
-  (* describe "afterAllAsync" (fun () ->
+  describe "afterAllAsync" (fun () ->
     describe "without timeout" (fun () ->
       let x = ref 0 in
 
@@ -234,9 +234,9 @@ let () =
 
       test "" (fun () -> pass); (* runner will crash if there's no tests *)
     );
-  ); *)
+  );
 
-  (* describe "afterAllPromise" (fun () ->
+  describe "afterAllPromise" (fun () ->
     describe "without timeout" (fun () ->
       let x = ref 0 in
 
@@ -273,7 +273,7 @@ let () =
 
       test "" (fun () -> pass); (* runner will crash if there's no tests *)
     );
-  ); *)
+  );
 
 
   describe "afterEach" (fun () -> 
