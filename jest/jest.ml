@@ -441,10 +441,12 @@ module Jest = struct
   external runAllTicks : unit -> unit = "jest.runAllTicks"
   external runAllTimers : unit -> unit = "jest.runAllTimers"
   external runAllImmediates : unit -> unit = "jest.runAllImmediates"
-  external runTimersToTime : int -> unit = "jest.runTimersToTime"
   external advanceTimersByTime : int -> unit = "jest.advanceTimersByTime"
   external runOnlyPendingTimers : unit -> unit = "jest.runOnlyPendingTimers"
-  external useFakeTimers : unit -> unit = "jest.useFakeTimers"
+  type fakeTimersConfig = {
+    legacyFakeTimers: bool
+  }
+  external useFakeTimers : ?config:fakeTimersConfig -> unit -> unit = "jest.useFakeTimers"
   external useRealTimers : unit -> unit = "jest.useRealTimers"
 end
 
