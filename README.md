@@ -97,6 +97,37 @@ At first sight this may still seem very limiting, and if you write very imperati
 - Write a helper function if you find yourself repeating code. That's what functions are for, after all. You can even write a helper function to generate tests.
 - If you're still struggling, make an issue on GitHub or bring it up in Discord. We'll either figure out a good way to do it with what we already have, or realize that something actually is missing and add it.
 
+## Running your tests
+
+To run your tests with dune, add a rule stanza in a dune file:
+
+```clojure
+(rule
+ (alias runtest)
+ (deps
+  (alias_rec test))
+ (action
+  (run npx jest)))
+```
+
+Configure jest to find the compiled jest tests. For example, you could include a jest.config.js file in your projects's root with contents:
+
+```
+module.exports = {
+  rootDir: "./_build/default/",
+  testMatch: ["**/*_test.js"],
+  testEnvironment: "node",
+};
+```
+
+Now run the tests with:
+
+```sh
+dune build @runtest
+```
+
+The advantage of this approach, as opposed to just running `npx jest` independently, is that the runtest alias will also run any OCaml/Reason tests that are defined in test stanzas.
+
 ## Documentation
 
 For the moment, please refer to [Jest.mli](./jest/jest.mli).
