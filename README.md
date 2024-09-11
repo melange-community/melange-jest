@@ -103,9 +103,7 @@ To run your tests with dune, add a rule stanza in a dune file:
 
 ```clojure
 (rule
- (alias runtest)
- (deps
-  (alias_rec test))
+ (alias jest)
  (action
   (run npx jest)))
 ```
@@ -123,10 +121,9 @@ module.exports = {
 Now run the tests with:
 
 ```sh
-dune build @runtest
+dune build @jest
 ```
 
-The advantage of this approach, as opposed to just running `npx jest` independently, is that the runtest alias will also run any OCaml/Reason tests that are defined in test stanzas.
 
 ## Documentation
 
