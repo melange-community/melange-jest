@@ -7,22 +7,13 @@
     url = "github:nix-ocaml/nix-overlays";
     inputs.flake-utils.follows = "flake-utils";
   };
-  inputs.melange-src = {
-    url = "github:melange-re/melange";
-    inputs.nix-filter.follows = "nix-filter";
-    inputs.flake-utils.follows = "flake-utils";
-    inputs.nixpkgs.follows = "nixpkgs";
-  };
 
-  outputs = { self, nixpkgs, flake-utils, nix-filter, melange-src }:
+  outputs = { self, nixpkgs, flake-utils, nix-filter }:
     flake-utils.lib.eachDefaultSystem (system:
       let
-        pkgs = nixpkgs.legacyPackages."${system}".appendOverlays [
-          (self: super: {
-            ocamlPackages = super.ocaml-ng.ocamlPackages_5_1;
-          })
-          melange-src.overlays.default
-        ];
+        pkgs = nixpkgs.legacyPackages."${system}".extend (self: super: {
+          ocamlPackages = super.ocaml-ng.ocamlPackages_5_2;
+        });
         inherit (pkgs) nodejs_latest lib stdenv darwin yarn cacert;
 
         checkPhaseNodePackages = pkgs.buildNpmPackage {
@@ -31,7 +22,7 @@
 
           src = ./.;
           dontNpmBuild = true;
-          npmDepsHash = "sha256-ssHwcub4A3tHvpQ929o9qImgHjmHNEsP6waQIrT1jUE=";
+          npmDepsHash = "sha256-T0oSCDJtwK0vNwoQQBgRtgcrz/1/gfIEUaz2uHgVKKY=";
           installPhase = ''
             runHook preInstall
             mkdir -p "$out"
