@@ -2,5 +2,6 @@
  (target test)
  (alias test)
  (libraries jest jestDom melange-webapi)
+ (module_systems (es6 mjs))
  (preprocess
   (pps melange.ppx)))
