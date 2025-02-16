@@ -1,10 +1,9 @@
-[@@@mel.config { flags = [| "--preamble";
-{|
+[@@@mel.config
+{ flags = [| "--preamble"; {|
 /**
  * @jest-environment jsdom
  */
-|}
-|] }]
+|} |] }]
 
 open Jest
 open JestDom

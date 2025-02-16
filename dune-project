@@ -6,7 +6,7 @@
 
 (generate_opam_files true)
 
-(maintainers "Javier Ch\195\161varri <javier.chavarri@gmail.com>")
+(maintainers "Javier Chávarri <javier.chavarri@gmail.com>")
 
 (authors
  "glennsl glennsl@users.noreply.github.com"
@@ -27,6 +27,6 @@
  (description "Melange bindings for Jest JavaScript library.")
  (depends
   (melange
-   (>= "2.0.0"))
+   (>= "5.0.0"))
   (reason :with-test)
   (melange-webapi :with-test)))

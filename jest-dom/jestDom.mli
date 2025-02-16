@@ -11,7 +11,7 @@ module TextContent : sig
   type options = < normalizeWhitespace : bool Js.undefined > Js.t
 
   external makeOptions : ?normalizeWhitespace:bool -> unit -> options = ""
-    [@@mel.obj]
+  [@@mel.obj]
 end
 
 external expect : t -> expect = "expect"
