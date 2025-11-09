@@ -8,7 +8,7 @@
       forAllSystems = f: nixpkgs.lib.genAttrs nixpkgs.lib.systems.flakeExposed (system:
         let
           pkgs = nixpkgs.legacyPackages.${system}.extend (self: super: {
-            ocamlPackages = super.ocaml-ng.ocamlPackages_5_2;
+            ocamlPackages = super.ocaml-ng.ocamlPackages_5_4;
           });
         in
         f pkgs);
@@ -58,7 +58,7 @@
             propagatedBuildInputs = with pkgs.ocamlPackages; [ melange ];
             doCheck = true;
             nativeCheckInputs = [ reason nodejs_latest yarn cacert ];
-            checkInputs = [ melange-webapi cacert checkPhaseNodePackages ];
+            checkInputs = [ melange-webapi checkPhaseNodePackages ];
             checkPhase = ''
               dune build @all -p melange-jest --display=short
               ln -sfn "${checkPhaseNodePackages}/node_modules" ./node_modules
@@ -88,7 +88,12 @@
         {
           default = mkShell { };
           release = mkShell {
-            buildInputs = with pkgs; [ cacert curl ocamlPackages.dune-release git ];
+            buildInputs = with pkgs; [
+              cacert
+              curl
+              ocamlPackages.dune-release
+              git
+            ];
           };
         });
     };
