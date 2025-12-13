@@ -4,4 +4,5 @@
  (name jest)
  (public_name melange-jest.jest)
  (modes melange)
- (preprocess (pps melange.ppx)))
+ (preprocess
+  (pps melange.ppx)))
