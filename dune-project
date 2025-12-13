@@ -1,8 +1,10 @@
-(lang dune 3.9)
+(lang dune 3.18)
 
 (using melange 0.1)
 
 (name melange-jest)
+
+(maintenance_intent "(latest)")
 
 (generate_opam_files true)
 
