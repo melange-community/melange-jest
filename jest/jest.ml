@@ -168,13 +168,13 @@ module Runner (A : Asserter) = struct
   let testAll name inputs callback =
     inputs
     |> List.iter (fun input ->
-           let name =
-             let input = inputAsString input in
-             {j|$name - $input|j}
-           in
-           _test name (fun () ->
-               affirm @@ callback input;
-               Js.undefined))
+        let name =
+          let input = inputAsString input in
+          {j|$name - $input|j}
+        in
+        _test name (fun () ->
+            affirm @@ callback input;
+            Js.undefined))
 
   external describe :
     string -> ((unit -> unit Js.undefined)[@mel.uncurry]) -> unit = "describe"
@@ -312,13 +312,13 @@ module Runner (A : Asserter) = struct
     let testAll name inputs callback =
       inputs
       |> List.iter (fun input ->
-             let name =
-               let input : string = inputAsString input in
-               {j|$name - $input|j}
-             in
-             _test name (fun () ->
-                 affirm @@ callback input;
-                 Js.undefined))
+          let name =
+            let input : string = inputAsString input in
+            {j|$name - $input|j}
+          in
+          _test name (fun () ->
+              affirm @@ callback input;
+              Js.undefined))
 
     external describe :
       string -> ((unit -> unit Js.undefined)[@mel.uncurry]) -> unit
@@ -348,11 +348,11 @@ module Runner (A : Asserter) = struct
     let testAll name inputs callback =
       inputs
       |> List.iter (fun input ->
-             let name =
-               let input : string = inputAsString input in
-               {j|$name - $input|j}
-             in
-             test name (fun () -> callback input))
+          let name =
+            let input : string = inputAsString input in
+            {j|$name - $input|j}
+          in
+          test name (fun () -> callback input))
 
     external describe :
       string -> ((unit -> unit Js.undefined)[@mel.uncurry]) -> unit

@@ -107,8 +107,8 @@ let _ =
 
           let before = call fn 10 in
           mockFn
-          |> MockJs.mockImplementation (fun [@u] a ->
-                 Js.Undefined.return (string_of_int a))
+          |> MockJs.mockImplementation (fun[@u] a ->
+              Js.Undefined.return (string_of_int a))
           |> ignore;
 
           expect (before, call fn 18, call fn 24)
@@ -125,12 +125,12 @@ let _ =
 
           let before = call fn 10 in
           mockFn
-          |> MockJs.mockImplementationOnce (fun [@u] a ->
-                 Js.Undefined.return (string_of_int a))
+          |> MockJs.mockImplementationOnce (fun[@u] a ->
+              Js.Undefined.return (string_of_int a))
           |> ignore;
           mockFn
-          |> MockJs.mockImplementationOnce (fun [@u] a ->
-                 Js.Undefined.return (string_of_int (a * 2)))
+          |> MockJs.mockImplementationOnce (fun[@u] a ->
+              Js.Undefined.return (string_of_int (a * 2)))
           |> ignore;
 
           expect (before, call fn 18, call fn 24, call fn 12)
@@ -335,7 +335,7 @@ let _ =
 
   describe "fn2" (fun _ ->
       test "calls implementation" (fun _ ->
-          let mockFn = JestJs.fn2 (fun [@u] a b -> string_of_int (a + b)) in
+          let mockFn = JestJs.fn2 (fun[@u] a b -> string_of_int (a + b)) in
           let fn = MockJs.fn mockFn in
 
           expect (call2 fn 18 24) |> toBe "42")
