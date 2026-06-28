@@ -16,12 +16,12 @@ jobs:
           - macos-latest
           - ubuntu-latest
         ocaml-compiler:
-          - 5.2.x
+          - 5.5.x
 
       fail-fast: false
     runs-on: ${{ matrix.system }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       - uses: actions/setup-node@v6
         with:

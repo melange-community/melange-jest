@@ -3,26 +3,35 @@
 
   inputs.nixpkgs.url = "github:nix-ocaml/nix-overlays";
 
-  outputs = { self, nixpkgs }:
+  outputs =
+    { self, nixpkgs }:
     let
-      forAllSystems = f: nixpkgs.lib.genAttrs nixpkgs.lib.systems.flakeExposed (system:
-        let
-          pkgs = nixpkgs.legacyPackages.${system}.extend (self: super: {
-            ocamlPackages = super.ocaml-ng.ocamlPackages_5_4;
-          });
-        in
-        f pkgs);
+      forAllSystems =
+        f:
+        nixpkgs.lib.genAttrs nixpkgs.lib.systems.flakeExposed (
+          system:
+          let
+            pkgs = nixpkgs.legacyPackages.${system}.extend (
+              self: super: {
+                ocamlPackages = super.ocaml-ng.ocamlPackages_5_5;
+              }
+            );
+          in
+          f pkgs
+        );
     in
     {
-      packages = forAllSystems (pkgs:
+      packages = forAllSystems (
+        pkgs:
         let
-          inherit (pkgs) nodejs_latest lib stdenv darwin yarn cacert;
-
+          inherit (pkgs) yarn cacert nodejs_24;
           checkPhaseNodePackages = pkgs.buildNpmPackage {
             name = "melange-jest-deps";
             version = "0.0.0-dev";
             src =
-              let fs = pkgs.lib.fileset; in
+              let
+                fs = pkgs.lib.fileset;
+              in
               fs.toSource {
                 root = ./.;
                 fileset = fs.unions [
@@ -38,7 +47,6 @@
                 ];
               };
 
-
             dontNpmBuild = true;
             npmDepsHash = "sha256-T0oSCDJtwK0vNwoQQBgRtgcrz/1/gfIEUaz2uHgVKKY=";
             installPhase = ''
@@ -49,41 +57,60 @@
             '';
           };
 
-          melange-jest = with pkgs.ocamlPackages; buildDunePackage {
-            pname = "melange-jest";
-            version = "dev";
+          melange-jest =
+            with pkgs.ocamlPackages;
+            buildDunePackage {
+              pname = "melange-jest";
+              version = "dev";
 
-            src = ./.;
-            nativeBuildInputs = with pkgs.ocamlPackages; [ melange ];
-            propagatedBuildInputs = with pkgs.ocamlPackages; [ melange ];
-            doCheck = true;
-            nativeCheckInputs = [ reason nodejs_latest yarn cacert ];
-            checkInputs = [ melange-webapi checkPhaseNodePackages ];
-            checkPhase = ''
-              dune build @all -p melange-jest --display=short
-              ln -sfn "${checkPhaseNodePackages}/node_modules" ./node_modules
-              ./node_modules/.bin/jest
-            '';
-          };
+              src = ./.;
+              nativeBuildInputs = with pkgs.ocamlPackages; [ melange ];
+              propagatedBuildInputs = with pkgs.ocamlPackages; [ melange ];
+              doCheck = true;
+              nativeCheckInputs = [
+                reason
+                nodejs_24
+                yarn
+                cacert
+              ];
+              checkInputs = [
+                melange-webapi
+                checkPhaseNodePackages
+              ];
+              checkPhase = ''
+                dune build @all -p melange-jest --display=short
+                ln -sfn "${checkPhaseNodePackages}/node_modules" ./node_modules
+                ./node_modules/.bin/jest
+              '';
+            };
         in
         {
           inherit melange-jest;
           default = melange-jest;
-        });
-      devShells = forAllSystems (pkgs:
+        }
+      );
+      devShells = forAllSystems (
+        pkgs:
         let
-          mkShell = { buildInputs ? [ ] }: pkgs.mkShell {
-            inputsFrom = [ self.packages.${pkgs.system}.melange-jest ];
-            nativeBuildInputs = with pkgs; [
-              yarn
-              nodejs_latest
-            ] ++ (with pkgs.ocamlPackages; [
-              ocamlformat
-              merlin
-              reason
-            ]);
-            inherit buildInputs;
-          };
+          mkShell =
+            {
+              buildInputs ? [ ],
+            }:
+            pkgs.mkShell {
+              inputsFrom = [ self.packages.${pkgs.stdenv.hostPlatform.system}.melange-jest ];
+              nativeBuildInputs =
+                with pkgs;
+                [
+                  yarn
+                  nodejs_24
+                ]
+                ++ (with pkgs.ocamlPackages; [
+                  ocamlformat
+                  merlin
+                  reason
+                ]);
+              inherit buildInputs;
+            };
         in
         {
           default = mkShell { };
@@ -95,6 +122,7 @@
               git
             ];
           };
-        });
+        }
+      );
     };
 }
